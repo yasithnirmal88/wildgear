@@ -589,7 +589,7 @@ function AdminPanelContent() {
              <div style={{ fontSize: 12, color: '#F8F5F0', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.email || "Admin Access"}</div>
           </div>
           {user && (
-            <button onClick={handleLogout} style={{ width: '100%', padding: '8px', borderRadius: 8, background: 'rgba(220,38,38,0.1)', color: '#dc2626', border: '1px solid rgba(220,38,38,0.2)', fontSize: 11, fontWeight: 700, cursor: 'pointer' }}>LOGOUT</button>
+            <button onClick={handleLogout} style={{ width: '100%', padding: '10px', borderRadius: 12, background: '#FFFFFF', color: '#dc2626', border: 'none', fontSize: 11, fontWeight: 800, cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.1)', transition: 'all 0.2s' }}>LOGOUT</button>
           )}
         </div>
       </aside>
