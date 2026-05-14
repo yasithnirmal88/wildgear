@@ -129,7 +129,7 @@ const Textarea = ({ label, ...props }: any) => (
 const Btn = ({ children, variant = "primary", onClick, style = {}, disabled, type = "button" }: any) => {
   const styles: any = {
     primary: { background: "#2BCF5B", color: "#F8F5F0", border: "none" },
-    secondary: { background: "#F8F5F0", color: "#10662E", border: "1px solid #EDE8E0" },
+    secondary: { background: "#F8F5F0", color: "#095223", border: "1px solid #EDE8E0" },
     danger: { background: "#fee2e2", color: "#dc2626", border: "1px solid #fecaca" },
     success: { background: "#25D366", color: "#fff", border: "none" },
     ghost: { background: "transparent", color: "#6b7280", border: "1px solid #EDE8E0" },
@@ -145,8 +145,8 @@ const Modal = ({ title, onClose, children, width = 560 }: any) => (
   <div style={{ position: "fixed", inset: 0, background: "rgba(14,20,16,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: 16, backdropFilter: 'blur(4px)' }}>
     <div style={{ background: "#F8F5F0", borderRadius: 24, width: "100%", maxWidth: width, maxHeight: "90vh", overflowY: "auto", boxShadow: "0 25px 50px rgba(0,0,0,0.25)", border: '1px solid rgba(27,67,50,0.1)', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 24px", borderBottom: "1px solid #EDE8E0", position: 'sticky', top: 0, background: '#F8F5F0', zIndex: 10 }}>
-        <h3 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: "#10662E", textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{title}</h3>
-        <button onClick={onClose} style={{ background: "#EDE8E0", border: "none", width: 32, height: 32, borderRadius: 10, cursor: "pointer", fontSize: 16, color: "#10662E", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
+        <h3 style={{ margin: 0, fontSize: 16, fontWeight: 900, color: "#095223", textTransform: 'uppercase', letterSpacing: '-0.02em' }}>{title}</h3>
+        <button onClick={onClose} style={{ background: "#EDE8E0", border: "none", width: 32, height: 32, borderRadius: 10, cursor: "pointer", fontSize: 16, color: "#095223", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</button>
       </div>
       <div style={{ padding: "24px" }}>{children}</div>
     </div>
@@ -467,13 +467,13 @@ function AdminPanelContent() {
 
   // --- Render Auth States ---
   if (authLoading) {
-    return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", color: "#10662E", fontSize: 15, background: '#F8F5F0', fontWeight: 600 }}>Authenticating...</div>;
+    return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", color: "#095223", fontSize: 15, background: '#F8F5F0', fontWeight: 600 }}>Authenticating...</div>;
   }
 
   // SECURITY: If not logged in and secret key is wrong, show nothing/404
   if (!user && !hasSecretKey) {
     return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", background: "#F8F5F0", color: "#10662E", textAlign: 'center', padding: 20 }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", background: "#F8F5F0", color: "#095223", textAlign: 'center', padding: 20 }}>
         <h1 style={{ fontSize: 72, margin: 0, opacity: 0.1 }}>404</h1>
         <p style={{ fontWeight: 600, marginTop: -10 }}>The requested page was not found.</p>
         <Btn variant="ghost" onClick={() => router.push("/")} style={{ marginTop: 20 }}>Return Home</Btn>
@@ -490,7 +490,7 @@ function AdminPanelContent() {
             <div style={{ width: 100, height: 100, margin: "0 auto 16px", borderRadius: 24, overflow: 'hidden', border: '1px solid #EDE8E0', background: '#fff' }}>
               <img src="/images/updated logo.jpg" alt="Wild Trail Gear Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
-            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 900, color: "#10662E", textTransform: 'uppercase', letterSpacing: '-0.03em' }}>Admin Login</h1>
+            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 900, color: "#095223", textTransform: 'uppercase', letterSpacing: '-0.03em' }}>Admin Login</h1>
             <p style={{ color: "#84A98C", fontSize: 13, fontWeight: 600, marginTop: 4 }}>Wild Trail Gear Management Console</p>
           </div>
           <form onSubmit={handleLogin}>
@@ -507,7 +507,7 @@ function AdminPanelContent() {
   // With secret key access or user authentication, show the admin interface
 
   if (!dataLoaded) {
-    return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", color: "#10662E", fontSize: 15, background: '#F8F5F0', fontWeight: 600 }}>Syncing Trail Cloud...</div>;
+    return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", color: "#095223", fontSize: 15, background: '#F8F5F0', fontWeight: 600 }}>Syncing Trail Cloud...</div>;
   }
 
   // --- Dashboard Data ---
@@ -532,7 +532,7 @@ function AdminPanelContent() {
       {/* Sidebar */}
       <aside style={{ 
         width: sidebarW, 
-        background: "#10662E", 
+        background: "#095223", 
         flexShrink: 0, 
         display: "flex", 
         flexDirection: "column", 
@@ -585,7 +585,7 @@ function AdminPanelContent() {
         </nav>
         <div style={{ padding: "20px 24px", borderTop: "1px solid rgba(248,245,240,0.08)" }}>
           <div style={{ marginBottom: 12, display: 'flex', alignItems: 'center', gap: 10 }}>
-             <Avatar name={user?.email || "Admin"} size={28} bg="#10662E" />
+             <Avatar name={user?.email || "Admin"} size={28} bg="#095223" />
              <div style={{ fontSize: 12, color: '#F8F5F0', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.email || "Admin Access"}</div>
           </div>
           {user && (
@@ -612,10 +612,10 @@ function AdminPanelContent() {
             {isMobile && (
               <button 
                 onClick={() => setIsSidebarOpen(true)}
-                style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer', padding: 0, color: '#10662E' }}
+                style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer', padding: 0, color: '#095223' }}
               >☰</button>
             )}
-            <h1 className="playfair" style={{ margin: 0, fontSize: isMobile ? 16 : 20, fontWeight: 900, color: "#10662E", textTransform: 'uppercase', letterSpacing: '-0.03em' }}>{tab.toUpperCase()}</h1>
+            <h1 className="playfair" style={{ margin: 0, fontSize: isMobile ? 16 : 20, fontWeight: 900, color: "#095223", textTransform: 'uppercase', letterSpacing: '-0.03em' }}>{tab.toUpperCase()}</h1>
           </div>
           <div style={{ display: "flex", gap: 8 }}>
             {tab === "items" && <Btn onClick={() => { setItemForm(emptyItem); setEditItemId(null); setModal("item"); }} style={{ padding: isMobile ? "8px 12px" : "10px 20px" }}>{isMobile ? "+ Add" : "+ New Item"}</Btn>}
@@ -630,7 +630,7 @@ function AdminPanelContent() {
             <div>
               <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(auto-fit, minmax(220px, 1fr))", gap: isMobile ? 12 : 20, marginBottom: 32 }}>
                 {[
-                  { label: "Inventory", value: items.length, color: "#10662E" },
+                  { label: "Inventory", value: items.length, color: "#095223" },
                   { label: "Active", value: activeRentals, color: "#52796F" },
                   { label: "Overdue", value: overdueCount, color: "#dc2626" },
                   { label: "Revenue", value: `LKR ${totalRevenue.toLocaleString()}`, color: "#C8651A" },
@@ -644,11 +644,11 @@ function AdminPanelContent() {
               </div>
               <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fit, minmax(400px, 1fr))", gap: 24 }}>
                 <div style={{ background: "#fff", borderRadius: 24, border: "1px solid #EDE8E0", overflow: "hidden" }}>
-                  <div style={{ padding: "20px 24px", borderBottom: "1px solid #EDE8E0", fontWeight: 900, fontSize: 15, color: "#10662E" }}>RECENT RENTALS</div>
+                  <div style={{ padding: "20px 24px", borderBottom: "1px solid #EDE8E0", fontWeight: 900, fontSize: 15, color: "#095223" }}>RECENT RENTALS</div>
                   {rentals.slice(0, 5).map(r => (
                     <div key={r.id} style={{ padding: "16px 24px", borderBottom: "1px solid #F8F5F0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <div><div style={{ fontWeight: 700 }}>{r.customerName}</div><div style={{ fontSize: 11, color: "#84A98C" }}>{r.rentDate}</div></div>
-                      <Badge label={r.status} color={r.status === "active" ? "#10662E" : "#25D366"} />
+                      <Badge label={r.status} color={r.status === "active" ? "#095223" : "#25D366"} />
                     </div>
                   ))}
                   {rentals.length === 0 && <div style={{ padding: 32, textAlign: 'center', color: '#84A98C' }}>No rentals found.</div>}
@@ -663,10 +663,10 @@ function AdminPanelContent() {
               {items.map(item => (
                 <div key={item.id} style={{ background: "#fff", borderRadius: 24, border: "1px solid #EDE8E0", overflow: "hidden", display: 'flex', flexDirection: 'column' }}>
                   <div style={{ height: isMobile ? 120 : 160, background: item.image_url ? `url("${item.image_url}") center/cover` : "#EDE8E0", position: 'relative' }}>
-                    <div style={{ position: "absolute", top: 8, right: 8 }}><Badge label={item.category} color="#10662E" /></div>
+                    <div style={{ position: "absolute", top: 8, right: 8 }}><Badge label={item.category} color="#095223" /></div>
                   </div>
                   <div style={{ padding: isMobile ? 12 : 20, flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ fontWeight: 900, fontSize: isMobile ? 14 : 16, color: "#10662E", marginBottom: 6, lineClamp: 1, display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 1, overflow: 'hidden' }}>{item.name}</div>
+                    <div style={{ fontWeight: 900, fontSize: isMobile ? 14 : 16, color: "#095223", marginBottom: 6, lineClamp: 1, display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 1, overflow: 'hidden' }}>{item.name}</div>
                     <div style={{ display: "flex", justifyContent: "space-between", background: '#F8F5F0', padding: isMobile ? 8 : 12, borderRadius: 12, marginBottom: 12 }}>
                       <div><div style={{ fontSize: 8, fontWeight: 800 }}>STOCK</div><div style={{ fontSize: isMobile ? 14 : 18, fontWeight: 900 }}>{item.quantity}</div></div>
                       <div style={{ textAlign: 'right' }}><div style={{ fontSize: 8, fontWeight: 800 }}>PRICE</div><div style={{ fontSize: isMobile ? 12 : 14, fontWeight: 900 }}>LKR {item.pricePerDay}</div></div>
@@ -1041,7 +1041,7 @@ function AdminPanelContent() {
                   placeholder="Search customers by name, phone, or email..." 
                   value={customerSearch}
                   onChange={(e) => setCustomerSearch(e.target.value)}
-                  style={{ width: '100%', border: 'none', outline: 'none', fontSize: 14, color: '#10662E', background: 'transparent' }}
+                  style={{ width: '100%', border: 'none', outline: 'none', fontSize: 14, color: '#095223', background: 'transparent' }}
                 />
               </div>
               <div style={{ background: "#fff", borderRadius: 24, border: "1px solid #EDE8E0", overflowX: "auto" }}>
@@ -1057,7 +1057,7 @@ function AdminPanelContent() {
                       )
                       .map(c => (
                     <tr key={c.id} style={{ borderBottom: "1px solid #F8F5F0" }}>
-                      <td style={{ padding: 16 }}><div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><Avatar name={c.name} size={32} /><div style={{ fontWeight: 700, fontSize: 14, color: '#10662E' }}>{c.name}</div></div></td>
+                      <td style={{ padding: 16 }}><div style={{ display: 'flex', alignItems: 'center', gap: 10 }}><Avatar name={c.name} size={32} /><div style={{ fontWeight: 700, fontSize: 14, color: '#095223' }}>{c.name}</div></div></td>
                       <td style={{ padding: 16, fontSize: 14, color: '#4b5563' }}>{c.phone}</td>
                       <td style={{ padding: 16, fontSize: 14, color: '#4b5563' }}>{c.email || "-"}</td>
                       <td style={{ padding: 16, fontSize: 14, color: '#4b5563' }}>{c.nic || "-"}</td>
@@ -1080,14 +1080,14 @@ function AdminPanelContent() {
           {/* Financials */}
           {tab === "billing" && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-              <div style={{ background: 'linear-gradient(135deg, #10662E 0%, #2D6A4F 100%)', borderRadius: 24, padding: 32, color: '#fff', boxShadow: '0 20px 40px rgba(27,67,50,0.15)' }}>
+              <div style={{ background: 'linear-gradient(135deg, #095223 0%, #2D6A4F 100%)', borderRadius: 24, padding: 32, color: '#fff', boxShadow: '0 20px 40px rgba(27,67,50,0.15)' }}>
                 <div style={{ fontSize: 12, fontWeight: 700, opacity: 0.8, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 8 }}>Total Realized Revenue</div>
                 <div className="playfair" style={{ fontSize: 42, fontWeight: 900, marginBottom: 4 }}>LKR {totalRevenue.toLocaleString()}</div>
                 <div style={{ fontSize: 14, opacity: 0.7 }}>Accumulated from {rentals.length} transaction records</div>
               </div>
 
               <div style={{ background: "#fff", borderRadius: 24, border: "1px solid #EDE8E0", overflow: "hidden", boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
-                <div style={{ padding: '20px 24px', borderBottom: '1px solid #F8F5F0', fontWeight: 900, fontSize: 15, color: '#10662E', display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ padding: '20px 24px', borderBottom: '1px solid #F8F5F0', fontWeight: 900, fontSize: 15, color: '#095223', display: 'flex', alignItems: 'center', gap: 10 }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                   TRANSACTION HISTORY
                 </div>
@@ -1099,8 +1099,8 @@ function AdminPanelContent() {
                         <tr key={r.id} className="admin-table-row" style={{ borderBottom: "1px solid #F8F5F0" }}>
                           <td style={{ padding: 16, fontFamily: 'monospace', fontSize: 13, color: '#4b5563' }}>#{r.id.toString().slice(-8)}</td>
                           <td style={{ padding: 16, fontWeight: 700, fontSize: 14 }}>{r.customerName}</td>
-                          <td style={{ padding: 16, fontWeight: 800, fontSize: 14, color: '#10662E' }}>LKR {r.totalAmount.toLocaleString()}</td>
-                          <td style={{ padding: 16 }}><Badge label={r.status} color={r.status === "active" ? "#10662E" : "#25D366"} /></td>
+                          <td style={{ padding: 16, fontWeight: 800, fontSize: 14, color: '#095223' }}>LKR {r.totalAmount.toLocaleString()}</td>
+                          <td style={{ padding: 16 }}><Badge label={r.status} color={r.status === "active" ? "#095223" : "#25D366"} /></td>
                         </tr>
                       ))}
                     </tbody>
@@ -1247,13 +1247,13 @@ function AdminPanelContent() {
       {viewRental && (
         <Modal title="Invoice Summary" onClose={() => setViewRental(null)} width={600}>
           <div id="printable-bill" style={{ background: '#fff', padding: '40px', borderRadius: '16px', color: '#1A1A18', border: '1px solid #EDE8E0' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 40, borderBottom: '2px solid #10662E', paddingBottom: 20 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 40, borderBottom: '2px solid #095223', paddingBottom: 20 }}>
               <div>
-                <h2 style={{ margin: 0, color: '#10662E', fontSize: 24, fontWeight: 900 }}>WILD TRAIL GEAR</h2>
+                <h2 style={{ margin: 0, color: '#095223', fontSize: 24, fontWeight: 900 }}>WILD TRAIL GEAR</h2>
                 <p style={{ margin: '4px 0', fontSize: 12, color: '#84A98C', fontWeight: 700 }}>Adventure Gear Rentals • Panadura</p>
               </div>
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: 18, fontWeight: 900, color: '#10662E' }}>INVOICE</div>
+                <div style={{ fontSize: 18, fontWeight: 900, color: '#095223' }}>INVOICE</div>
                 <div style={{ fontSize: 12, color: '#6b7280' }}>#{viewRental.id.toString().slice(-8)}</div>
               </div>
             </div>
@@ -1267,7 +1267,7 @@ function AdminPanelContent() {
               <div style={{ textAlign: isMobile ? 'left' : 'right' }}>
                 <div style={{ fontSize: 10, fontWeight: 800, color: '#84A98C', marginBottom: 8, textTransform: 'uppercase' }}>RENTAL PERIOD</div>
                 <div style={{ fontWeight: 700, fontSize: 14 }}>{viewRental.rentDate} to {viewRental.returnDate}</div>
-                <div style={{ fontSize: 13, color: '#10662E', fontWeight: 800 }}>{viewRental.days} Total Days</div>
+                <div style={{ fontSize: 13, color: '#095223', fontWeight: 800 }}>{viewRental.days} Total Days</div>
               </div>
             </div>
 
@@ -1304,9 +1304,9 @@ function AdminPanelContent() {
                   <span style={{ fontSize: 13 }}>Advance Paid</span>
                   <span style={{ fontWeight: 700 }}>- LKR {(viewRental.advancepaid || 0).toLocaleString()}</span>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderTop: '2px solid #10662E', marginTop: 8 }}>
-                  <span style={{ fontWeight: 900, color: '#10662E' }}>BALANCE DUE</span>
-                  <span style={{ fontWeight: 900, color: '#10662E', fontSize: 18 }}>LKR {(viewRental.totalAmount - (viewRental.advancepaid || 0)).toLocaleString()}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderTop: '2px solid #095223', marginTop: 8 }}>
+                  <span style={{ fontWeight: 900, color: '#095223' }}>BALANCE DUE</span>
+                  <span style={{ fontWeight: 900, color: '#095223', fontSize: 18 }}>LKR {(viewRental.totalAmount - (viewRental.advancepaid || 0)).toLocaleString()}</span>
                 </div>
               </div>
             </div>
