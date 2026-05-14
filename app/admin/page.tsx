@@ -576,7 +576,7 @@ function AdminPanelContent() {
               key={n.id} 
               onClick={() => { setTab(n.id); if (isMobile) setIsSidebarOpen(false); }} 
               className={`sidebar-link ${tab === n.id ? 'active' : ''}`}
-              style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 12, border: "none", cursor: "pointer", marginBottom: 4, background: tab === n.id ? "#2BCF5B" : "transparent", color: tab === n.id ? "#F8F5F0" : "#A8B5AB", fontSize: 14, fontWeight: tab === n.id ? 700 : 500, textAlign: "left", transition: "all 0.2s" }}
+              style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 12, border: "none", cursor: "pointer", marginBottom: 4, background: tab === n.id ? "#FFFFFF" : "transparent", color: tab === n.id ? "#074D1F" : "#A8B5AB", fontSize: 14, fontWeight: tab === n.id ? 800 : 500, textAlign: "left", transition: "all 0.2s" }}
             >
               <span style={{ fontSize: 18, lineHeight: 1, opacity: tab === n.id ? 1 : 0.6 }}>{n.icon}</span>
               {n.label}
