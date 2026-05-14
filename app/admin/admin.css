@@ -15,7 +15,7 @@
 
 .sidebar-link:hover {
   background: #F8F5F0;
-  color: #1B4332 !important;
+  color: #217536 !important;
 }
 
 .sidebar-link.active::after {
@@ -25,12 +25,12 @@
   top: 10px;
   bottom: 10px;
   width: 3px;
-  background: #1B4332;
+  background: #217536;
   border-radius: 0 4px 4px 0;
 }
 
 .admin-input:focus {
-  border-color: #1B4332 !important;
+  border-color: #217536 !important;
   box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.05);
 }
 
