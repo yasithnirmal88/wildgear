@@ -19,6 +19,7 @@ export type CatalogItem = {
   waMessage: string
   quantity?: number
   pricePerDay?: number
+  description?: string
 }
 
 export const CATALOG: CatalogItem[] = [

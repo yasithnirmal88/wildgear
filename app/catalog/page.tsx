@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -220,6 +221,7 @@ export default function CatalogPage() {
 function CatalogCard({ item }: { item: CatalogItem }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const badgeRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   const handleEnter = () => {
     gsap.to(cardRef.current, { y: -5, scale: 1.02, duration: 0.45, ease: 'power2.out' })
@@ -236,7 +238,8 @@ function CatalogCard({ item }: { item: CatalogItem }) {
   return (
     <div
       ref={cardRef}
-      className="catalog-card bg-white rounded-card overflow-hidden"
+      onClick={() => router.push(`/catalog/${item.id}`)}
+      className="catalog-card bg-white rounded-card overflow-hidden cursor-pointer"
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
     >
@@ -304,7 +307,8 @@ function CatalogCard({ item }: { item: CatalogItem }) {
             href={waLink(item.waMessage || "Hi! I'd like to rent this gear.")}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-[20px] px-4 py-2 text-xs font-semibold text-white no-underline"
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex items-center gap-1.5 rounded-[20px] px-4 py-2 text-xs font-semibold text-white no-underline hover:opacity-90 transition-opacity"
             style={{
               background: currentAvail === 'unavailable' ? '#b0b0b0' : '#25D366',
               pointerEvents: currentAvail === 'unavailable' ? 'none' : 'auto',
