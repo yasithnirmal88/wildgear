@@ -102,7 +102,7 @@ const Avatar = ({ name, size = 36, bg = "#52796F", color = "#F8F5F0" }: any) => 
 };
 
 const Badge = ({ label, color = "#52796F" }: any) => (
-  <span style={{ background: color + "22", color, fontSize: 11, fontWeight: 700, padding: "2px 10px", borderRadius: 100, whiteSpace: "nowrap", textTransform: 'uppercase', letterSpacing: '0.02em' }}>{label}</span>
+  <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", height: 24, background: color + "22", color, fontSize: 11, fontWeight: 700, padding: "0 10px", borderRadius: 100, whiteSpace: "nowrap", textTransform: 'uppercase', letterSpacing: '0.02em' }}>{label}</span>
 );
 
 const Input = ({ label, ...props }: any) => (
@@ -646,7 +646,7 @@ function AdminPanelContent() {
                 <div style={{ background: "#fff", borderRadius: 24, border: "1px solid #EDE8E0", overflow: "hidden" }}>
                   <div style={{ padding: "20px 24px", borderBottom: "1px solid #EDE8E0", fontWeight: 900, fontSize: 15, color: "#1B4332" }}>RECENT RENTALS</div>
                   {rentals.slice(0, 5).map(r => (
-                    <div key={r.id} style={{ padding: "16px 24px", borderBottom: "1px solid #F8F5F0", display: "flex", justifyContent: "space-between" }}>
+                    <div key={r.id} style={{ padding: "16px 24px", borderBottom: "1px solid #F8F5F0", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                       <div><div style={{ fontWeight: 700 }}>{r.customerName}</div><div style={{ fontSize: 11, color: "#84A98C" }}>{r.rentDate}</div></div>
                       <Badge label={r.status} color={r.status === "active" ? "#1B4332" : "#25D366"} />
                     </div>
