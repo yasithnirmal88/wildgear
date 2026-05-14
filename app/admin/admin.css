@@ -1,0 +1,60 @@
+.admin-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.06) !important;
+  border-color: #84A98C !important;
+}
+
+.sidebar-link {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.sidebar-link:hover {
+  background: #F8F5F0;
+  color: #1B4332 !important;
+}
+
+.sidebar-link.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  background: #1B4332;
+  border-radius: 0 4px 4px 0;
+}
+
+.admin-input:focus {
+  border-color: #1B4332 !important;
+  box-shadow: 0 0 0 3px rgba(27, 67, 50, 0.05);
+}
+
+.btn-premium {
+  transition: all 0.2s ease;
+}
+
+.btn-premium:active {
+  transform: scale(0.96);
+}
+
+.admin-table-row {
+  transition: background 0.15s ease;
+}
+
+.admin-table-row:hover {
+  background: #faf8f4 !important;
+}
+
+.glass-header {
+  backdrop-filter: blur(8px);
+  background: rgba(248, 245, 240, 0.8) !important;
+}
+
+.playfair {
+  font-family: var(--font-playfair);
+}
