@@ -128,7 +128,7 @@ const Textarea = ({ label, ...props }: any) => (
 
 const Btn = ({ children, variant = "primary", onClick, style = {}, disabled, type = "button" }: any) => {
   const styles: any = {
-    primary: { background: "#1B4332", color: "#F8F5F0", border: "none" },
+    primary: { background: "#2BCF5B", color: "#F8F5F0", border: "none" },
     secondary: { background: "#F8F5F0", color: "#1B4332", border: "1px solid #EDE8E0" },
     danger: { background: "#fee2e2", color: "#dc2626", border: "1px solid #fecaca" },
     success: { background: "#25D366", color: "#fff", border: "none" },
@@ -532,7 +532,7 @@ function AdminPanelContent() {
       {/* Sidebar */}
       <aside style={{ 
         width: sidebarW, 
-        background: "#1B2E20", 
+        background: "#217536", 
         flexShrink: 0, 
         display: "flex", 
         flexDirection: "column", 
@@ -576,7 +576,7 @@ function AdminPanelContent() {
               key={n.id} 
               onClick={() => { setTab(n.id); if (isMobile) setIsSidebarOpen(false); }} 
               className={`sidebar-link ${tab === n.id ? 'active' : ''}`}
-              style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 12, border: "none", cursor: "pointer", marginBottom: 4, background: tab === n.id ? "#1B4332" : "transparent", color: tab === n.id ? "#84A98C" : "#A8B5AB", fontSize: 14, fontWeight: tab === n.id ? 700 : 500, textAlign: "left", transition: "all 0.2s" }}
+              style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 12, border: "none", cursor: "pointer", marginBottom: 4, background: tab === n.id ? "#2BCF5B" : "transparent", color: tab === n.id ? "#F8F5F0" : "#A8B5AB", fontSize: 14, fontWeight: tab === n.id ? 700 : 500, textAlign: "left", transition: "all 0.2s" }}
             >
               <span style={{ fontSize: 18, lineHeight: 1, opacity: tab === n.id ? 1 : 0.6 }}>{n.icon}</span>
               {n.label}
@@ -672,8 +672,8 @@ function AdminPanelContent() {
                       <div style={{ textAlign: 'right' }}><div style={{ fontSize: 8, fontWeight: 800 }}>PRICE</div><div style={{ fontSize: isMobile ? 12 : 14, fontWeight: 900 }}>LKR {item.pricePerDay}</div></div>
                     </div>
                     <div style={{ display: "flex", gap: 6, marginTop: 'auto' }}>
-                      <Btn onClick={() => openQtyModal(item)} style={{ flex: 1, fontSize: 10, padding: '6px 4px', justifyContent: 'center', background: '#25D366', color: '#FFFFFF', border: 'none' }}>STOCK</Btn>
-                      <Btn onClick={() => { setItemForm(item); setEditItemId(item.id); setModal("item"); }} style={{ flex: 1, fontSize: 10, padding: '6px 4px', justifyContent: 'center', background: '#25D366', color: '#FFFFFF', border: 'none' }}>EDIT</Btn>
+                      <Btn onClick={() => openQtyModal(item)} style={{ flex: 1, fontSize: 10, padding: '6px 4px', justifyContent: 'center', background: '#2BCF5B', color: '#FFFFFF', border: 'none' }}>STOCK</Btn>
+                      <Btn onClick={() => { setItemForm(item); setEditItemId(item.id); setModal("item"); }} style={{ flex: 1, fontSize: 10, padding: '6px 4px', justifyContent: 'center', background: '#2BCF5B', color: '#FFFFFF', border: 'none' }}>EDIT</Btn>
                       {!isMobile && <Btn variant="danger" onClick={() => deleteItem(item.id)} style={{ padding: '6px 10px' }}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: 14, height: 14 }}><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/></svg></Btn>}
                     </div>
                   </div>
