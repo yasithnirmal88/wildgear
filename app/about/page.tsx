@@ -256,29 +256,27 @@ export default function AboutPage() {
               className="font-black uppercase text-canvas"
               style={{ fontSize: 'clamp(28px,3.5vw,48px)', letterSpacing: '-0.03em' }}
             >
-              MEET THE <span className="font-light text-sage-light">Crew</span>
+              MEET THE <span className="font-light text-sage-light">Founder</span>
             </h2>
           </div>
-          <div ref={teamRef} className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {TEAM.map((member, i) => (
-              <div
-                key={i}
-                className="team-card rounded-[32px] p-10 text-center"
-                style={{
-                  background: 'rgba(248,245,240,0.07)',
-                  border: '1px solid rgba(248,245,240,0.1)',
-                }}
-              >
-                <div
-                  className="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black text-white mx-auto mb-5"
-                  style={{ background: member.gradient }}
-                >
-                  {member.initials}
-                </div>
-                <div className="text-lg font-bold text-canvas mb-1.5">{member.name}</div>
-                <div className="text-[13px] text-sage-light tracking-wide">{member.role}</div>
-              </div>
-            ))}
+          <div ref={teamRef} className="flex justify-center">
+            <div
+              className="team-card rounded-[32px] p-10 text-center max-w-sm w-full"
+              style={{
+                background: 'rgba(248,245,240,0.07)',
+                border: '1px solid rgba(248,245,240,0.1)',
+              }}
+            >
+              {/* Using a regular img tag or next/image, using img for simplicity matching standard attributes */}
+              <img
+                src="/images/founder pic.jpeg"
+                alt="Kasun Perera - Founder"
+                className="w-28 h-28 rounded-full object-cover mx-auto mb-5"
+                style={{ border: '4px solid rgba(248,245,240,0.1)' }}
+              />
+              <div className="text-xl font-bold text-canvas mb-1.5">Kasun Perera</div>
+              <div className="text-[13px] text-sage-light tracking-wide uppercase">Founder & Trail Guide</div>
+            </div>
           </div>
         </div>
       </div>
