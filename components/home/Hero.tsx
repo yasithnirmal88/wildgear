@@ -159,7 +159,7 @@ export default function Hero() {
         <div
           className="hero-reveal flex gap-12 mt-14 pt-8 flex-wrap border-t border-canvas/12"
         >
-          {[['500+', 'Gear Items'], ['4.9★', 'Avg. Rating'], ['2-Day', 'Min. Rental']].map(([val, lbl]) => (
+          {[['50+', 'Gear Items'], ['4.9★', 'Avg. Rating'], ['2-Day', 'Min. Rental']].map(([val, lbl]) => (
             <div key={lbl}>
               <div
                 className="font-black text-canvas text-[28px] tracking-[-0.03em] leading-none"
