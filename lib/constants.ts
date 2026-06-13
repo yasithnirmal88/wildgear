@@ -1,4 +1,4 @@
-export const WA_NUMBER = '94754768386'
+export const WA_NUMBER = '94776864908'
 
 export function waLink(msg = "Hi! I'd like to rent some gear from Wild Trail Gear.") {
   return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`
