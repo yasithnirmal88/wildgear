@@ -3,6 +3,8 @@ export type Availability = 'available' | 'limited' | 'unavailable'
 export type TentVariant = {
   label: string
   price: number
+  quantity?: number
+  image_url?: string
 }
 
 export type CatalogItem = {

@@ -153,7 +153,7 @@ const Modal = ({ title, onClose, children, width = 560 }: any) => (
   </div>
 );
 
-const emptyItem = { name: "", category: "Tents", quantity: 0, pricePerDay: 0, image_url: null, description: "" };
+const emptyItem = { name: "", category: "Tents", quantity: 0, pricePerDay: 0, image_url: null, description: "", variants: [] };
 const emptyCustomer = { name: "", phone: "", email: "", address: "", nic: "" };
 
 function AdminPanelContent() {
@@ -234,6 +234,41 @@ function AdminPanelContent() {
       
       setItemForm((f: any) => ({ ...f, image_url: publicUrl }));
       console.log("Upload successful. Public URL:", publicUrl);
+    } catch (err: any) {
+      console.error("Supabase Storage Error:", err);
+      alert(`Upload failed: ${err.message || "Unknown error"}`);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleVariantImageUpload = async (e: any, index: number) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("File is too large. Please upload an image under 5MB.");
+      return;
+    }
+
+    setUploadingImage(true);
+    try {
+      const safeName = file.name.replace(/[^a-zA-Z0-9.]/g, '_');
+      const fileName = `items/${Date.now()}_variant_${safeName}`;
+
+      const { data, error } = await supabase.storage
+        .from('equipment')
+        .upload(fileName, file, { cacheControl: '3600', upsert: false });
+
+      if (error) throw error;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('equipment')
+        .getPublicUrl(fileName);
+      
+      const arr = [...(itemForm.variants || [])];
+      arr[index].image_url = publicUrl;
+      setItemForm((f: any) => ({ ...f, variants: arr }));
     } catch (err: any) {
       console.error("Supabase Storage Error:", err);
       alert(`Upload failed: ${err.message || "Unknown error"}`);
@@ -1146,6 +1181,50 @@ function AdminPanelContent() {
             <Input label="LKR / Day" type="number" value={itemForm.pricePerDay} onChange={(e: any) => setItemForm((f: any) => ({ ...f, pricePerDay: +e.target.value }))} />
           </div>
           <Textarea label="Description" value={itemForm.description} onChange={(e: any) => setItemForm((f: any) => ({ ...f, description: e.target.value }))} />
+          
+          <div style={{ marginTop: 20, marginBottom: 20, padding: 16, border: '1px solid #EDE8E0', borderRadius: 12, background: '#f8f9fa' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <label style={{ fontSize: 11, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>Subcategories (Variants)</label>
+              <Btn variant="secondary" onClick={() => {
+                const v = itemForm.variants || [];
+                setItemForm({ ...itemForm, variants: [...v, { label: '', price: 0, quantity: 0, image_url: '' }] })
+              }} style={{ padding: '6px 12px', fontSize: 11 }}>+ Add Subcategory</Btn>
+            </div>
+            {(itemForm.variants || []).map((v: any, i: number) => (
+              <div key={i} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: 8, marginBottom: 16, alignItems: 'end', paddingBottom: 16, borderBottom: i < ((itemForm.variants?.length || 0) - 1) ? '1px solid #EDE8E0' : 'none' }}>
+                <Input label="Name" value={v.label} onChange={(e: any) => {
+                  const arr = [...itemForm.variants];
+                  arr[i].label = e.target.value;
+                  setItemForm({ ...itemForm, variants: arr });
+                }} />
+                <Input label="Price/Day" type="number" value={v.price} onChange={(e: any) => {
+                  const arr = [...itemForm.variants];
+                  arr[i].price = +e.target.value;
+                  setItemForm({ ...itemForm, variants: arr });
+                }} />
+                <Input label="Qty" type="number" value={v.quantity} onChange={(e: any) => {
+                  const arr = [...itemForm.variants];
+                  arr[i].quantity = +e.target.value;
+                  setItemForm({ ...itemForm, variants: arr });
+                }} />
+                <Btn variant="danger" style={{ padding: '8px 12px', height: 42 }} onClick={() => {
+                  const arr = [...itemForm.variants];
+                  arr.splice(i, 1);
+                  setItemForm({ ...itemForm, variants: arr });
+                }}>✕</Btn>
+                <div style={{ gridColumn: '1 / -1', marginTop: 8 }}>
+                  <label style={{ display: "block", fontSize: 10, fontWeight: 700, color: "#6b7280", marginBottom: 4, textTransform: "uppercase" }}>Variant Photo</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    {v.image_url && (
+                      <img src={v.image_url} alt="Variant" style={{ width: 40, height: 40, objectFit: 'cover', borderRadius: 6, border: '1px solid #EDE8E0' }} />
+                    )}
+                    <input type="file" accept="image/*" onChange={(e) => handleVariantImageUpload(e, i)} style={{ fontSize: 12 }} disabled={uploadingImage} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
           <Btn onClick={saveItem} disabled={uploadingImage || isSaving} style={{ width: '100%', marginTop: 10 }}>
             {uploadingImage ? "Uploading Image..." : isSaving ? "Saving to Cloud..." : editItemId ? "Update Equipment" : "Save Equipment"}
           </Btn>

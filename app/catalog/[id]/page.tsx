@@ -24,7 +24,14 @@ const AVAIL_LABELS: Record<string, string> = {
 export default function ItemDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter()
   const [item, setItem] = useState<CatalogItem | null>(null)
+  const [selectedVariant, setSelectedVariant] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    if (item?.variants && item.variants.length > 0) {
+      setSelectedVariant(item.variants[0])
+    }
+  }, [item])
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -76,8 +83,8 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
 
   const currentAvail = item.availability || 'available'
   const isAvailable = currentAvail !== 'unavailable'
-  const priceDisplay = item.variants && item.variants.length > 0
-    ? `from LKR ${item.variants[0].price.toLocaleString()}`
+  const priceDisplay = selectedVariant 
+    ? `LKR ${selectedVariant.price.toLocaleString()}`
     : `LKR ${(item.pricePerDay || item.price || 0).toLocaleString()}`
 
   return (
@@ -102,10 +109,10 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
           {/* Left Column: Image */}
           <div className="w-full lg:w-1/2 flex-shrink-0">
             <div className="relative aspect-square rounded-[24px] overflow-hidden bg-[#F8F5F0]">
-              {item.image_url ? (
+              {(selectedVariant?.image_url || item.image_url) ? (
                 <Image
-                  src={item.image_url}
-                  alt={item.name}
+                  src={selectedVariant?.image_url || item.image_url}
+                  alt={selectedVariant ? `${item.name} - ${selectedVariant.label}` : item.name}
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -169,13 +176,13 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
                 <div className="text-[10px] font-bold text-sage uppercase tracking-wider mb-1">Rental Rate</div>
                 <div className="text-2xl font-black text-forest">
                   {priceDisplay}
-                  {!item.variants && <span className="text-sm font-semibold text-sage ml-1">/ day</span>}
+                  <span className="text-sm font-semibold text-sage ml-1">/ day</span>
                 </div>
               </div>
               <div className="bg-[#F8F5F0] rounded-[20px] p-5 border border-[#EDE8E0]">
                 <div className="text-[10px] font-bold text-sage uppercase tracking-wider mb-1">Stock Available</div>
                 <div className="text-2xl font-black text-ink">
-                  {item.quantity !== undefined ? item.quantity : 'Unknown'}
+                  {selectedVariant ? (selectedVariant.quantity || 0) : (item.quantity !== undefined ? item.quantity : 'Unknown')}
                   <span className="text-sm font-semibold text-sage ml-1">units</span>
                 </div>
               </div>
@@ -184,16 +191,33 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
             {/* Variants if any */}
             {item.variants && item.variants.length > 0 && (
               <div className="mb-10">
-                <h3 className="text-xs font-bold text-sage uppercase tracking-wider mb-3">Available Options</h3>
-                <div className="flex flex-wrap gap-2">
-                  {item.variants.map(v => (
-                    <div 
-                      key={v.label} 
-                      className="bg-white border border-[#EDE8E0] rounded-xl px-4 py-2 text-sm font-semibold text-ink shadow-sm"
-                    >
-                      {v.label} <span className="text-sage ml-1 font-normal">— LKR {v.price}/day</span>
-                    </div>
-                  ))}
+                <h3 className="text-xs font-bold text-sage uppercase tracking-wider mb-3">Select Subcategory</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {item.variants.map((v: any) => {
+                    const isSelected = selectedVariant?.label === v.label;
+                    return (
+                      <button 
+                        key={v.label} 
+                        onClick={() => setSelectedVariant(v)}
+                        className="flex flex-col items-center justify-center text-center p-3 rounded-2xl border-2 transition-all"
+                        style={{ 
+                          borderColor: isSelected ? '#1B4332' : '#EDE8E0',
+                          background: isSelected ? '#F8F5F0' : '#FFFFFF',
+                          boxShadow: isSelected ? '0 4px 12px rgba(27,67,50,0.1)' : 'none'
+                        }}
+                      >
+                        {v.image_url ? (
+                          <div className="w-12 h-12 rounded-full overflow-hidden mb-2 border border-[#EDE8E0] relative">
+                            <Image src={v.image_url} alt={v.label} fill className="object-cover" />
+                          </div>
+                        ) : (
+                          <div className="w-12 h-12 rounded-full bg-[#EDE8E0] mb-2 flex items-center justify-center text-xl">⛺</div>
+                        )}
+                        <div className="text-xs font-bold text-ink mb-0.5">{v.label}</div>
+                        <div className="text-[10px] font-semibold text-sage">LKR {v.price}</div>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
             )}
@@ -201,7 +225,7 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
             {/* Action Area */}
             <div className="mt-auto">
               <a
-                href={waLink(item.waMessage || `Hi! I'd like to rent the ${item.name}. Could you share availability for my dates?`)}
+                href={waLink(item.waMessage || `Hi! I'd like to rent the ${item.name}${selectedVariant ? ` (${selectedVariant.label})` : ''}. Could you share availability for my dates?`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-3 w-full rounded-[24px] py-4 px-8 text-[15px] font-bold text-white transition-all hover:-translate-y-1 hover:shadow-lg"
