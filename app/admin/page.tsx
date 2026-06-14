@@ -1007,7 +1007,7 @@ function AdminPanelContent() {
                   <div style={{ padding: 24 }}>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4, marginBottom: 8 }}>
                       {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => (
-                        <div key={d} style={{ textAlign: 'center', fontSize: 11, fontWeight: 600, color: '#7a9288', textTransform: 'uppercase', letterSpacing: 0.8, padding: '8px 0' }}>{d}</div>
+                        <div key={d} style={{ textAlign: 'center', fontSize: 13, fontWeight: 700, color: '#7a9288', textTransform: 'uppercase', letterSpacing: 0.8, padding: '8px 0' }}>{d}</div>
                       ))}
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4 }}>
@@ -1019,10 +1019,10 @@ function AdminPanelContent() {
                         return (
                           <div key={idx} style={{
                             textAlign: 'center',
-                            padding: isMobile ? '10px 4px' : '14px 8px',
+                            padding: isMobile ? '12px 4px' : '18px 8px',
                             borderRadius: 10,
-                            fontSize: 14,
-                            fontWeight: isBooked || isToday ? 700 : 400,
+                            fontSize: isMobile ? 16 : 20,
+                            fontWeight: isBooked || isToday ? 800 : 500,
                             background: isBooked ? '#dc2626' : isToday ? '#edf8ef' : 'transparent',
                             color: isBooked ? '#fff' : isToday ? '#255230' : '#1a2420',
                             border: isToday && !isBooked ? '2px solid #3a8a4e' : '2px solid transparent',
