@@ -69,15 +69,15 @@ export default function Footer() {
             <div className="flex flex-col gap-4 text-sm">
               <a href={waLink()} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group no-underline text-canvas">
                 <IconWA size={16} className="text-sage group-hover:text-sage-light" />
-                <span>+94 77 123 4567</span>
+                <span>+94 77 686 4908</span>
               </a>
-              <a href="mailto:hello@wildtrailgear.lk" className="flex items-center gap-3 group no-underline text-canvas">
+              <a href="mailto:Wild.trail.gears@gmail.com" className="flex items-center gap-3 group no-underline text-canvas">
                 <IconMail size={16} className="text-sage group-hover:text-sage-light" />
-                <span>hello@wildtrailgear.lk</span>
+                <span>Wild.trail.gears@gmail.com</span>
               </a>
               <div className="flex items-start gap-3">
                 <IconPin size={16} className="text-sage mt-0.5" />
-                <span>123 Trail Road, Panadura,<br />Sri Lanka</span>
+                <span>No 27/A, Bodhirukkarama Road,<br />Nalluruwa, Panadura</span>
               </div>
             </div>
           </div>

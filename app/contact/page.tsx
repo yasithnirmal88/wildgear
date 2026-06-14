@@ -197,10 +197,10 @@ export default function ContactPage() {
             <div className="flex flex-col gap-4 mb-12">
               <h3 className="text-lg font-bold text-ink mb-2">Or reach us directly</h3>
               {[
-                { icon: <IconWA size={20} color="#fff" />, bg: '#25D366', label: 'WhatsApp', val: '+94 754 768 386', sub: 'Usually replies within the hour', href: waLink() },
-                { icon: <IconPhone size={20} color="#1B4332" />, bg: '#EDE8E0', label: 'Phone', val: '+94 754 768 386', sub: 'Call us anytime', href: 'tel:+94754768386' },
-                { icon: <IconMail size={20} color="#1B4332" />, bg: '#EDE8E0', label: 'Email', val: 'hello@wildtrailgear.lk', sub: 'We reply within 24 hours', href: 'mailto:hello@wildtrailgear.lk' },
-                { icon: <IconPin size={20} color="#1B4332" />, bg: '#EDE8E0', label: 'Visit Us', val: 'Panadura, Sri Lanka', sub: 'Come pick up your gear', href: null },
+                { icon: <IconWA size={20} color="#fff" />, bg: '#25D366', label: 'WhatsApp', val: '+94 77 686 4908', sub: 'Usually replies within the hour', href: waLink() },
+                { icon: <IconPhone size={20} color="#1B4332" />, bg: '#EDE8E0', label: 'Phone', val: '+94 77 686 4908', sub: 'Call us anytime', href: 'tel:+94776864908' },
+                { icon: <IconMail size={20} color="#1B4332" />, bg: '#EDE8E0', label: 'Email', val: 'Wild.trail.gears@gmail.com', sub: 'We reply within 24 hours', href: 'mailto:Wild.trail.gears@gmail.com' },
+                { icon: <IconPin size={20} color="#1B4332" />, bg: '#EDE8E0', label: 'Visit Us', val: 'No 27/A, Bodhirukkarama Road, Nalluruwa, Panadura', sub: 'Come pick up your gear', href: null },
               ].map((item, i) => (
                 <div
                   key={i}

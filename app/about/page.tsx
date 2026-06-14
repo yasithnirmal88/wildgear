@@ -297,9 +297,9 @@ export default function AboutPage() {
             </h2>
             <div className="flex flex-col gap-5">
               {[
-                { icon: <IconPin size={18} />, label: 'Address', val: 'Panadura, Western Province, Sri Lanka' },
-                { icon: <IconWA size={18} />, label: 'WhatsApp', val: '+94 754 768 386', href: waLink() },
-                { icon: <IconMail size={18} />, label: 'Email', val: 'hello@wildtrailgear.lk', href: 'mailto:hello@wildtrailgear.lk' },
+                { icon: <IconPin size={18} />, label: 'Address', val: 'No 27/A, Bodhirukkarama Road, Nalluruwa, Panadura', href: null },
+                { icon: <IconWA size={18} />, label: 'WhatsApp', val: '+94 77 686 4908', href: waLink() },
+                { icon: <IconMail size={18} />, label: 'Email', val: 'Wild.trail.gears@gmail.com', href: 'mailto:Wild.trail.gears@gmail.com' },
               ].map(({ icon, label, val, href }) => (
                 <div key={label} className="flex items-center gap-4">
                   <div
