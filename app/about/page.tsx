@@ -45,7 +45,7 @@ const TEAM = [
 
 const STATS = [
   { val: 2019, suffix: '', label: 'Founded' },
-  { val: 500, suffix: '+', label: 'Gear Items' },
+  { val: 50, suffix: '+', label: 'Gear Items' },
   { val: 1200, suffix: '+', label: 'Happy Renters' },
 ]
 
