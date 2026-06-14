@@ -168,6 +168,7 @@ function AdminPanelContent() {
   const [items, setItems] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [rentals, setRentals] = useState<any[]>([]);
+  const [reviews, setReviews] = useState<any[]>([]);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const [tab, setTab] = useState("dashboard");
@@ -178,6 +179,11 @@ function AdminPanelContent() {
   const [customerSearch, setCustomerSearch] = useState("");
   const [rentalCustSearch, setRentalCustSearch] = useState("");
   const [showCustDropdown, setShowCustDropdown] = useState(false);
+
+  const emptyReview = { name: "", loc: "", rating: 5, text: "" };
+  const [reviewForm, setReviewForm] = useState<any>(emptyReview);
+  const [isSavingReview, setIsSavingReview] = useState(false);
+  const [reviewSearch, setReviewSearch] = useState("");
 
   // Bookings & Availability state
   const [calendarMonth, setCalendarMonth] = useState(new Date().getMonth());
@@ -384,10 +390,12 @@ function AdminPanelContent() {
       const { data: itemsData } = await supabase.from('rental_items').select('*').order('name');
       const { data: customersData } = await supabase.from('rental_customers').select('*').order('name');
       const { data: rentalsData } = await supabase.from('rental_records').select('*').order('id', { ascending: false });
+      const { data: reviewsData } = await supabase.from('rental_reviews').select('*').order('created_at', { ascending: false });
       
       if (itemsData) setItems(itemsData);
       if (customersData) setCustomers(customersData);
       if (rentalsData) setRentals(rentalsData);
+      if (reviewsData) setReviews(reviewsData);
       setDataLoaded(true);
     };
 
@@ -396,11 +404,13 @@ function AdminPanelContent() {
     const itemsSub = supabase.channel('items_changes').on('postgres_changes', { event: '*', schema: 'public', table: 'rental_items' }, fetchData).subscribe();
     const customersSub = supabase.channel('customers_changes').on('postgres_changes', { event: '*', schema: 'public', table: 'rental_customers' }, fetchData).subscribe();
     const rentalsSub = supabase.channel('rentals_changes').on('postgres_changes', { event: '*', schema: 'public', table: 'rental_records' }, fetchData).subscribe();
+    const reviewsSub = supabase.channel('reviews_changes').on('postgres_changes', { event: '*', schema: 'public', table: 'rental_reviews' }, fetchData).subscribe();
 
     return () => {
       itemsSub.unsubscribe();
       customersSub.unsubscribe();
       rentalsSub.unsubscribe();
+      reviewsSub.unsubscribe();
     };
   }, [user, hasSecretKey]);
 
@@ -573,6 +583,40 @@ function AdminPanelContent() {
     }
   };
 
+  const saveReview = async () => {
+    if (!reviewForm.name || !reviewForm.text) return alert("Name and Review text are required");
+    
+    setIsSavingReview(true);
+    try {
+      const { error } = await supabase.from('rental_reviews').insert({
+        name: reviewForm.name,
+        loc: reviewForm.loc || 'Panadura',
+        rating: reviewForm.rating,
+        text: reviewForm.text
+      });
+      if (error) throw error;
+      setModal(null);
+      setReviewForm(emptyReview);
+    } catch (e) {
+      console.error(e);
+      alert("Error saving review");
+    } finally {
+      setIsSavingReview(false);
+    }
+  };
+
+  const deleteReview = async (id: string) => {
+    if (confirm("Delete this review?")) {
+      try {
+        const { error } = await supabase.from('rental_reviews').delete().eq('id', id);
+        if (error) throw error;
+      } catch (e) {
+        console.error(e);
+        alert("Error deleting review");
+      }
+    }
+  };
+
   // --- Render Auth States ---
   if (authLoading) {
     return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", color: "#217536", fontSize: 15, background: '#F8F5F0', fontWeight: 600 }}>Authenticating...</div>;
@@ -679,6 +723,7 @@ function AdminPanelContent() {
             { id: "availability", icon: "◎", label: "Availability" },
             { id: "customers", icon: "⊡", label: "Customers" },
             { id: "billing", icon: "⊠", label: "Financials" },
+            { id: "reviews", icon: "★", label: "Reviews" },
           ].map(n => (
             <button 
               key={n.id} 
@@ -729,6 +774,7 @@ function AdminPanelContent() {
             {tab === "items" && <Btn onClick={() => { setItemForm(emptyItem); setEditItemId(null); setModal("item"); }} style={{ padding: isMobile ? "8px 12px" : "10px 20px" }}>{isMobile ? "+ Add" : "+ New Item"}</Btn>}
             {tab === "customers" && <Btn onClick={() => { setCustForm(emptyCustomer); setEditCustId(null); setModal("customer"); }} style={{ padding: isMobile ? "8px 12px" : "10px 20px" }}>{isMobile ? "+ Add" : "+ New Customer"}</Btn>}
             {tab === "rentals" && <Btn onClick={() => { setRentalForm({ customerId: "", rentDate: "", returnDate: "", notes: "", items: [] }); setRentalCustSearch(""); setShowCustDropdown(false); setModal("rental"); }} style={{ padding: isMobile ? "8px 12px" : "10px 20px" }}>{isMobile ? "+ Add" : "+ New Rental"}</Btn>}
+            {tab === "reviews" && <Btn onClick={() => { setReviewForm(emptyReview); setModal("review"); }} style={{ padding: isMobile ? "8px 12px" : "10px 20px" }}>{isMobile ? "+ Add" : "+ New Review"}</Btn>}
           </div>
         </header>
 
@@ -1251,6 +1297,76 @@ function AdminPanelContent() {
               </div>
             </div>
           )}
+
+          {/* Reviews Management */}
+          {tab === "reviews" && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: "#fff", borderRadius: 16, padding: "12px 16px", border: "1px solid #EDE8E0", boxShadow: "0 2px 8px rgba(0,0,0,0.02)" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A8B5AB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input 
+                  type="text" 
+                  placeholder="Search reviews by customer name, location, or comment..." 
+                  value={reviewSearch}
+                  onChange={(e) => setReviewSearch(e.target.value)}
+                  style={{ width: '100%', border: 'none', outline: 'none', fontSize: 14, color: '#217536', background: 'transparent' }}
+                />
+              </div>
+
+              <div style={{ background: "#fff", borderRadius: 24, border: "1px solid #EDE8E0", overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", minWidth: isMobile ? 600 : 'auto' }}>
+                  <thead>
+                    <tr style={{ background: "#F8F5F0" }}>
+                      {["CUSTOMER", "LOCATION", "RATING", "REVIEW COMMENT", "DATE", "ACTIONS"].map(h => (
+                        <th key={h} style={{ padding: 16, textAlign: 'left', fontSize: 10, fontWeight: 800, color: "#84A98C", letterSpacing: '0.05em' }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {reviews
+                      .filter(r => 
+                        r.name.toLowerCase().includes(reviewSearch.toLowerCase()) || 
+                        (r.loc && r.loc.toLowerCase().includes(reviewSearch.toLowerCase())) ||
+                        r.text.toLowerCase().includes(reviewSearch.toLowerCase())
+                      )
+                      .map(r => (
+                        <tr key={r.id} style={{ borderBottom: "1px solid #F8F5F0" }}>
+                          <td style={{ padding: 16 }}>
+                            <div style={{ fontWeight: 700, fontSize: 14, color: '#217536' }}>{r.name}</div>
+                          </td>
+                          <td style={{ padding: 16, fontSize: 14, color: '#4b5563' }}>{r.loc || "-"}</td>
+                          <td style={{ padding: 16, fontSize: 14, color: '#E5A93B', fontWeight: 700 }}>
+                            {"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}
+                          </td>
+                          <td style={{ padding: 16, fontSize: 14, color: '#4b5563', maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'normal', lineClamp: 2, display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2 }}>
+                            {r.text}
+                          </td>
+                          <td style={{ padding: 16, fontSize: 13, color: '#84A98C' }}>
+                            {new Date(r.created_at).toLocaleDateString()}
+                          </td>
+                          <td style={{ padding: 16 }}>
+                            <Btn variant="danger" onClick={() => deleteReview(r.id)} style={{ fontSize: 11 }}>Delete</Btn>
+                          </td>
+                        </tr>
+                      ))}
+                    {reviews.filter(r => 
+                      r.name.toLowerCase().includes(reviewSearch.toLowerCase()) || 
+                      (r.loc && r.loc.toLowerCase().includes(reviewSearch.toLowerCase())) ||
+                      r.text.toLowerCase().includes(reviewSearch.toLowerCase())
+                    ).length === 0 && (
+                      <tr>
+                        <td colSpan={6} style={{ padding: 32, textAlign: 'center', color: '#84A98C' }}>
+                          No reviews found matching "{reviewSearch}"
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
@@ -1614,6 +1730,41 @@ function AdminPanelContent() {
               <Btn onClick={() => setReturnConfirmRental(null)} variant="secondary" style={{ flex: 1, height: 44, justifyContent: 'center' }}>Cancel</Btn>
             </div>
           </div>
+        </Modal>
+      )}
+
+      {modal === "review" && (
+        <Modal title="Add Customer Review" onClose={() => setModal(null)}>
+          <Input 
+            label="Customer Name" 
+            value={reviewForm.name} 
+            onChange={(e: any) => setReviewForm((f: any) => ({ ...f, name: e.target.value }))} 
+            placeholder="e.g. John Doe"
+          />
+          <Input 
+            label="Location" 
+            value={reviewForm.loc} 
+            onChange={(e: any) => setReviewForm((f: any) => ({ ...f, loc: e.target.value }))} 
+            placeholder="e.g. Colombo (optional)"
+          />
+          <Select 
+            label="Rating" 
+            value={reviewForm.rating} 
+            onChange={(e: any) => setReviewForm((f: any) => ({ ...f, rating: +e.target.value }))}
+          >
+            {[5, 4, 3, 2, 1].map(stars => (
+              <option key={stars} value={stars}>{stars} Stars</option>
+            ))}
+          </Select>
+          <Textarea 
+            label="Review text" 
+            value={reviewForm.text} 
+            onChange={(e: any) => setReviewForm((f: any) => ({ ...f, text: e.target.value }))} 
+            placeholder="Enter customer feedback here..."
+          />
+          <Btn onClick={saveReview} disabled={isSavingReview} style={{ width: '100%', marginTop: 10 }}>
+            {isSavingReview ? "Saving..." : "Save Review"}
+          </Btn>
         </Modal>
       )}
     </div>
