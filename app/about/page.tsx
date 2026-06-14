@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -11,6 +11,7 @@ import {
 } from '@/components/Icons'
 import Eyebrow from '@/components/Eyebrow'
 import { waLink } from '@/lib/constants'
+import { supabase } from '@/lib/supabase'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -43,12 +44,6 @@ const TEAM = [
   { name: 'Amali Wickrama', role: 'Customer Experience', initials: 'AW', gradient: 'linear-gradient(135deg, #84A98C, #2D4A35)' },
 ]
 
-const STATS = [
-  { val: 2019, suffix: '', label: 'Founded' },
-  { val: 50, suffix: '+', label: 'Gear Items' },
-  { val: 1200, suffix: '+', label: 'Happy Renters' },
-]
-
 export default function AboutPage() {
   const heroRef = useRef<HTMLDivElement>(null)
   const valuesRef = useRef<HTMLDivElement>(null)
@@ -56,6 +51,30 @@ export default function AboutPage() {
   const storyRightRef = useRef<HTMLDivElement>(null)
   const teamRef = useRef<HTMLDivElement>(null)
   const statsRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  const [renterCount, setRenterCount] = useState(25)
+
+  useEffect(() => {
+    const fetchCustomerCount = async () => {
+      try {
+        const { count, error } = await supabase
+          .from('rental_customers')
+          .select('*', { count: 'exact', head: true })
+        if (!error && count !== null) {
+          setRenterCount(count)
+        }
+      } catch (err) {
+        console.error('Error fetching customer count:', err)
+      }
+    }
+    fetchCustomerCount()
+  }, [])
+
+  const STATS = [
+    { val: 2025, suffix: '', label: 'Founded' },
+    { val: 50, suffix: '+', label: 'Gear Items' },
+    { val: renterCount, suffix: '+', label: 'Happy Renters' },
+  ]
 
   useGSAP(() => {
     // Hero reveal
@@ -113,7 +132,7 @@ export default function AboutPage() {
         },
       })
     })
-  })
+  }, { scope: heroRef, dependencies: [renterCount] })
 
   return (
     <div className="bg-canvas min-h-screen pt-24">
@@ -248,35 +267,26 @@ export default function AboutPage() {
       </div>
 
       {/* Team */}
-      <div className="bg-forest py-24 px-16">
+      <div className="bg-forest pt-16 pb-24 px-16">
         <div className="max-w-[1200px] mx-auto">
-          <div className="text-center mb-16">
+          <div ref={teamRef} className="flex flex-col items-center text-center">
+            <div className="relative mb-8">
+              <img
+                src="/images/founder-pic.jpeg"
+                alt="Kasun Perera - Founder"
+                className="w-52 h-52 rounded-full object-cover shadow-2xl"
+                style={{ border: '6px solid rgba(248,245,240,0.12)' }}
+              />
+            </div>
             <Eyebrow label="The Team" light className="justify-center" />
             <h2
-              className="font-black uppercase text-canvas"
+              className="font-black uppercase text-canvas mt-4"
               style={{ fontSize: 'clamp(28px,3.5vw,48px)', letterSpacing: '-0.03em' }}
             >
               MEET THE <span className="font-light text-sage-light">Founder</span>
             </h2>
-          </div>
-          <div ref={teamRef} className="flex justify-center">
-            <div
-              className="team-card rounded-[32px] p-10 text-center max-w-sm w-full"
-              style={{
-                background: 'rgba(248,245,240,0.07)',
-                border: '1px solid rgba(248,245,240,0.1)',
-              }}
-            >
-              {/* Using a regular img tag or next/image, using img for simplicity matching standard attributes */}
-              <img
-                src="/images/founder-pic.jpeg"
-                alt="Kasun Perera - Founder"
-                className="w-28 h-28 rounded-full object-cover mx-auto mb-5"
-                style={{ border: '4px solid rgba(248,245,240,0.1)' }}
-              />
-              <div className="text-xl font-bold text-canvas mb-1.5">Kasun Perera</div>
-              <div className="text-[13px] text-sage-light tracking-wide uppercase">Founder & Trail Guide</div>
-            </div>
+            <div className="text-xl font-bold text-canvas mt-6 mb-1.5">Kasun Perera</div>
+            <div className="text-[13px] text-sage-light tracking-wide uppercase">Founder & Trail Guide</div>
           </div>
         </div>
       </div>
@@ -296,6 +306,7 @@ export default function AboutPage() {
             <div className="flex flex-col gap-5">
               {[
                 { icon: <IconPin size={18} />, label: 'Address', val: 'No 27/A, Bodhirukkarama Road, Nalluruwa, Panadura', href: null },
+                { icon: <IconCompass size={18} />, label: 'Open', val: '24 / 7', href: null },
                 { icon: <IconWA size={18} />, label: 'WhatsApp', val: '+94 77 686 4908', href: waLink() },
                 { icon: <IconMail size={18} />, label: 'Email', val: 'Wild.trail.gears@gmail.com', href: 'mailto:Wild.trail.gears@gmail.com' },
               ].map(({ icon, label, val, href }) => (
@@ -325,9 +336,9 @@ export default function AboutPage() {
             style={{ aspectRatio: '4/3', border: '1px solid #EDE8E0' }}
           >
             <IconPin size={48} color="#52796F" />
-            <div className="text-base font-semibold text-slate">Panadura, Sri Lanka</div>
+            <div className="text-base font-semibold text-slate text-center px-4">No 27/A, Bodhirukkarama Road, Nalluruwa, Panadura</div>
             <a
-              href="https://maps.google.com/?q=Panadura,Sri+Lanka"
+              href="https://maps.google.com/?q=No+27/A+Bodhirukkarama+Road+Nalluruwa+Panadura+Sri+Lanka"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-forest text-canvas rounded-btn px-5 py-2.5 text-[13px] font-semibold no-underline mt-2"

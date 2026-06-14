@@ -169,6 +169,7 @@ function AdminPanelContent() {
   const [customers, setCustomers] = useState<any[]>([]);
   const [rentals, setRentals] = useState<any[]>([]);
   const [reviews, setReviews] = useState<any[]>([]);
+  const [bundles, setBundles] = useState<any[]>([]);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   const [tab, setTab] = useState("dashboard");
@@ -184,6 +185,10 @@ function AdminPanelContent() {
   const [reviewForm, setReviewForm] = useState<any>(emptyReview);
   const [isSavingReview, setIsSavingReview] = useState(false);
   const [reviewSearch, setReviewSearch] = useState("");
+
+  const emptyBundle = { name: "", description: "", price_label: "", items: [""], has_image: false, sort_order: 0 };
+  const [bundleForm, setBundleForm] = useState<any>(emptyBundle);
+  const [editBundleId, setEditBundleId] = useState<string | null>(null);
 
   // Bookings & Availability state
   const [calendarMonth, setCalendarMonth] = useState(new Date().getMonth());
@@ -396,6 +401,8 @@ function AdminPanelContent() {
       if (customersData) setCustomers(customersData);
       if (rentalsData) setRentals(rentalsData);
       if (reviewsData) setReviews(reviewsData);
+      const { data: bundlesData } = await supabase.from('rental_bundles').select('*').order('sort_order');
+      if (bundlesData) setBundles(bundlesData);
       setDataLoaded(true);
     };
 
@@ -405,12 +412,14 @@ function AdminPanelContent() {
     const customersSub = supabase.channel('customers_changes').on('postgres_changes', { event: '*', schema: 'public', table: 'rental_customers' }, fetchData).subscribe();
     const rentalsSub = supabase.channel('rentals_changes').on('postgres_changes', { event: '*', schema: 'public', table: 'rental_records' }, fetchData).subscribe();
     const reviewsSub = supabase.channel('reviews_changes').on('postgres_changes', { event: '*', schema: 'public', table: 'rental_reviews' }, fetchData).subscribe();
+    const bundlesSub = supabase.channel('bundles_changes').on('postgres_changes', { event: '*', schema: 'public', table: 'rental_bundles' }, fetchData).subscribe();
 
     return () => {
       itemsSub.unsubscribe();
       customersSub.unsubscribe();
       rentalsSub.unsubscribe();
       reviewsSub.unsubscribe();
+      bundlesSub.unsubscribe();
     };
   }, [user, hasSecretKey]);
 
@@ -617,6 +626,26 @@ function AdminPanelContent() {
     }
   };
 
+  const saveBundle = async () => {
+    if (!bundleForm.name) return alert("Bundle name is required");
+    try {
+      const { id, ...dataToSave } = bundleForm;
+      dataToSave.items = dataToSave.items.filter((i: string) => i.trim() !== "");
+      if (editBundleId) {
+        await supabase.from('rental_bundles').update(dataToSave).eq('id', editBundleId);
+      } else {
+        await supabase.from('rental_bundles').insert(dataToSave);
+      }
+      setModal(null);
+      setBundleForm(emptyBundle);
+      setEditBundleId(null);
+    } catch (e) { alert("Error saving bundle"); }
+  };
+
+  const deleteBundle = async (id: string) => {
+    if (confirm("Delete this bundle?")) await supabase.from('rental_bundles').delete().eq('id', id);
+  };
+
   // --- Render Auth States ---
   if (authLoading) {
     return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100vh", color: "#217536", fontSize: 15, background: '#F8F5F0', fontWeight: 600 }}>Authenticating...</div>;
@@ -718,6 +747,7 @@ function AdminPanelContent() {
           {[
             { id: "dashboard", icon: "◈", label: "Dashboard" },
             { id: "items", icon: "⊞", label: "Inventory" },
+            { id: "packages", icon: "▣", label: "Packages" },
             { id: "rentals", icon: "⊟", label: "Rentals" },
             { id: "bookings", icon: "◉", label: "Bookings" },
             { id: "availability", icon: "◎", label: "Availability" },
@@ -775,6 +805,7 @@ function AdminPanelContent() {
             {tab === "customers" && <Btn onClick={() => { setCustForm(emptyCustomer); setEditCustId(null); setModal("customer"); }} style={{ padding: isMobile ? "8px 12px" : "10px 20px" }}>{isMobile ? "+ Add" : "+ New Customer"}</Btn>}
             {tab === "rentals" && <Btn onClick={() => { setRentalForm({ customerId: "", rentDate: "", returnDate: "", notes: "", items: [] }); setRentalCustSearch(""); setShowCustDropdown(false); setModal("rental"); }} style={{ padding: isMobile ? "8px 12px" : "10px 20px" }}>{isMobile ? "+ Add" : "+ New Rental"}</Btn>}
             {tab === "reviews" && <Btn onClick={() => { setReviewForm(emptyReview); setModal("review"); }} style={{ padding: isMobile ? "8px 12px" : "10px 20px" }}>{isMobile ? "+ Add" : "+ New Review"}</Btn>}
+            {tab === "packages" && <Btn onClick={() => { setBundleForm(emptyBundle); setEditBundleId(null); setModal("bundle"); }} style={{ padding: isMobile ? "8px 12px" : "10px 20px" }}>{isMobile ? "+ Add" : "+ New Package"}</Btn>}
           </div>
         </header>
 
@@ -1298,6 +1329,38 @@ function AdminPanelContent() {
             </div>
           )}
 
+          {/* Packages */}
+          {tab === "packages" && (
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(auto-fill, minmax(320px, 1fr))", gap: isMobile ? 12 : 20 }}>
+              {bundles.map(b => (
+                <div key={b.id} style={{ background: "#fff", borderRadius: 24, border: "1px solid #EDE8E0", overflow: "hidden" }}>
+                  {b.has_image && (
+                    <div className="relative h-40" style={{ height: 160, background: '#EDE8E0', position: 'relative' }}>
+                      <img src="/images/camping-eg.webp" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <div style={{ position: 'absolute', top: 8, left: 8, background: '#074D1F', color: '#fff', fontSize: 10, fontWeight: 800, padding: '4px 10px', borderRadius: 100, letterSpacing: '0.05em', textTransform: 'uppercase' }}>Featured</div>
+                    </div>
+                  )}
+                  <div style={{ padding: isMobile ? 16 : 20 }}>
+                    <div style={{ fontWeight: 900, fontSize: 18, color: '#217536', marginBottom: 4 }}>{b.name}</div>
+                    <div style={{ fontSize: 13, color: '#52796F', fontWeight: 700, marginBottom: 8 }}>{b.price_label}</div>
+                    <div style={{ fontSize: 13, color: '#6b7280', marginBottom: 12, lineHeight: 1.5 }}>{b.description}</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
+                      {(b.items || []).map((item: string, i: number) => (
+                        <span key={i} style={{ background: '#F8F5F0', fontSize: 11, fontWeight: 700, color: '#217536', padding: '4px 10px', borderRadius: 100 }}>{item}</span>
+                      ))}
+                    </div>
+                    <div style={{ fontSize: 10, color: '#84A98C', marginBottom: 12 }}>Order: {b.sort_order}</div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <Btn variant="secondary" onClick={() => { setBundleForm({ ...b }); setEditBundleId(b.id); setModal("bundle"); }} style={{ fontSize: 11 }}>Edit</Btn>
+                      <Btn variant="danger" onClick={() => deleteBundle(b.id)} style={{ fontSize: 11 }}>Delete</Btn>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {bundles.length === 0 && <div style={{ padding: 40, textAlign: 'center', color: '#84A98C', background: '#fff', borderRadius: 24, border: '1px solid #EDE8E0' }}>No packages yet. Click "+ New Package" to add one.</div>}
+            </div>
+          )}
+
           {/* Reviews Management */}
           {tab === "reviews" && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -1730,6 +1793,40 @@ function AdminPanelContent() {
               <Btn onClick={() => setReturnConfirmRental(null)} variant="secondary" style={{ flex: 1, height: 44, justifyContent: 'center' }}>Cancel</Btn>
             </div>
           </div>
+        </Modal>
+      )}
+
+      {modal === "bundle" && (
+        <Modal title={editBundleId ? "Edit Package" : "Add New Package"} onClose={() => { setModal(null); setEditBundleId(null); setBundleForm(emptyBundle); }} width={520}>
+          <Input label="Package Name" value={bundleForm.name} onChange={(e: any) => setBundleForm((f: any) => ({ ...f, name: e.target.value }))} placeholder="e.g. Weekend Warrior" />
+          <Input label="Price Label" value={bundleForm.price_label} onChange={(e: any) => setBundleForm((f: any) => ({ ...f, price_label: e.target.value }))} placeholder="e.g. LKR 1,250" />
+          <Textarea label="Description" value={bundleForm.description} onChange={(e: any) => setBundleForm((f: any) => ({ ...f, description: e.target.value }))} />
+          <div style={{ marginBottom: 14 }}>
+            <label style={{ display: "block", fontSize: 11, fontWeight: 700, color: "#6b7280", marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>Included Items</label>
+            {(bundleForm.items || []).map((item: string, i: number) => (
+              <div key={i} style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+                <input value={item} onChange={(e: any) => {
+                  const arr = [...(bundleForm.items || [])];
+                  arr[i] = e.target.value;
+                  setBundleForm((f: any) => ({ ...f, items: arr }));
+                }} style={{ flex: 1, padding: "10px 14px", borderRadius: 10, border: "1px solid #EDE8E0", fontSize: 14, background: "#fff", color: "#1A1A18", outline: "none" }} placeholder="e.g. Manual Tent (3P)" />
+                <Btn variant="danger" style={{ padding: '8px 12px' }} onClick={() => {
+                  const arr = [...(bundleForm.items || [])];
+                  arr.splice(i, 1);
+                  setBundleForm((f: any) => ({ ...f, items: arr }));
+                }}>✕</Btn>
+              </div>
+            ))}
+            <Btn variant="secondary" onClick={() => setBundleForm((f: any) => ({ ...f, items: [...(f.items || []), ""] }))} style={{ padding: '6px 12px', fontSize: 11 }}>+ Add Item</Btn>
+          </div>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 14 }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: 'pointer' }}>
+              <input type="checkbox" checked={bundleForm.has_image} onChange={(e: any) => setBundleForm((f: any) => ({ ...f, has_image: e.target.checked }))} style={{ width: 18, height: 18 }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", textTransform: "uppercase", letterSpacing: "0.05em" }}>Show featured image</span>
+            </label>
+          </div>
+          <Input label="Sort Order" type="number" value={bundleForm.sort_order} onChange={(e: any) => setBundleForm((f: any) => ({ ...f, sort_order: +e.target.value }))} />
+          <Btn onClick={saveBundle} style={{ width: '100%', marginTop: 10 }}>{editBundleId ? "Update Package" : "Save Package"}</Btn>
         </Modal>
       )}
 

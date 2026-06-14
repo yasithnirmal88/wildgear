@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -8,44 +8,23 @@ import { useGSAP } from '@gsap/react'
 import { IconWA, IconCheck } from '@/components/Icons'
 import Eyebrow from '@/components/Eyebrow'
 import { waLink } from '@/lib/constants'
+import { supabase } from '@/lib/supabase'
 
 gsap.registerPlugin(ScrollTrigger)
-
-const BUNDLES = [
-  {
-    name: 'Weekend Warrior',
-    desc: 'Everything for a 2-day trail. Tent, cooking set, hammock, anti-leech socks.',
-    price: 'LKR 1,250',
-    items: ['Manual Tent (3P)', 'Cooking Set', 'Hammock', 'Anti Leech Socks'],
-    hasImage: true,
-  },
-  {
-    name: 'Full Expedition',
-    desc: 'Complete kit for multi-day treks. Everything you need, nothing you don\'t.',
-    price: 'LKR 2,100',
-    items: ['Manual Tent (6P)', 'Gas Stove', 'Cooking Set', 'Water Bag 3L', 'Hammock'],
-    hasImage: false,
-  },
-  {
-    name: 'Day Hiker',
-    desc: 'Light and fast. Essentials for a single-day trail.',
-    price: 'LKR 450',
-    items: ['Anti Leech Socks', 'Water Bag 3L'],
-    hasImage: false,
-  },
-  {
-    name: 'Camp Cook Kit',
-    desc: 'Everything for preparing meals at basecamp.',
-    price: 'LKR 550',
-    items: ['Windproof Gas Stove', 'Cooking Set'],
-    hasImage: false,
-  },
-]
 
 export default function Bundles() {
   const sectionRef = useRef<HTMLElement>(null)
   const headerRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
+  const [bundles, setBundles] = useState<any[]>([])
+
+  useEffect(() => {
+    const fetchBundles = async () => {
+      const { data } = await supabase.from('rental_bundles').select('*').order('sort_order')
+      if (data) setBundles(data)
+    }
+    fetchBundles()
+  }, [])
 
   useGSAP(() => {
     if (!sectionRef.current) return
@@ -70,7 +49,7 @@ export default function Bundles() {
         }
       )
     }
-  }, { scope: sectionRef })
+  }, { scope: sectionRef, dependencies: [bundles] })
 
   return (
     <section ref={sectionRef} className="bg-canvas py-24 px-16">
@@ -89,13 +68,12 @@ export default function Bundles() {
         </div>
 
         <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {BUNDLES.map((b, i) => (
+          {bundles.map((b, i) => (
             <div
-              key={i}
+              key={b.id}
               className={`bundle-card rounded-[32px] overflow-hidden relative transition-transform duration-300 hover:-translate-y-1 ${i === 0 ? 'bg-forest text-canvas shadow-lg' : 'bg-white border border-bone shadow-sm hover:shadow-md'}`}
             >
-              {/* Hero image for first card */}
-              {i === 0 && (
+              {b.has_image && (
                 <div className="relative h-48">
                   <Image
                     src="/images/camping-eg.webp"
@@ -125,7 +103,7 @@ export default function Bundles() {
                   <div
                     className="bg-olive text-canvas rounded-xl px-3.5 py-1.5 text-[15px] font-bold flex-shrink-0"
                   >
-                    {b.price}
+                    {b.price_label}
                     <span className="text-[11px] font-normal opacity-70">/day</span>
                   </div>
                 </div>
@@ -133,11 +111,11 @@ export default function Bundles() {
                 <p
                   className={`text-sm leading-relaxed mb-4 ${i === 0 ? 'text-canvas/65' : 'text-slate'}`}
                 >
-                  {b.desc}
+                  {b.description}
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {b.items.map(item => (
+                  {(b.items || []).map((item: string) => (
                     <span
                       key={item}
                       className={`inline-flex items-center gap-1.5 text-xs font-medium rounded-full px-3 py-1 ${i === 0 ? 'bg-canvas/10 text-canvas' : 'bg-bone text-ink'}`}
@@ -149,7 +127,7 @@ export default function Bundles() {
                 </div>
 
                 <a
-                  href={waLink(`Hi! I'm interested in the "${b.name}" rental bundle (${b.price}/day). Can you share availability?`)}
+                  href={waLink(`Hi! I'm interested in the "${b.name}" rental bundle (${b.price_label}/day). Can you share availability?`)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`inline-flex items-center gap-2 rounded-btn px-[22px] py-[10px] text-sm font-semibold no-underline transition-opacity hover:opacity-90 ${i === 0 ? 'bg-canvas text-forest' : 'bg-forest text-canvas'}`}
