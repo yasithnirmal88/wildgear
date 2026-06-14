@@ -269,7 +269,7 @@ export default function AboutPage() {
             >
               {/* Using a regular img tag or next/image, using img for simplicity matching standard attributes */}
               <img
-                src="/images/founder pic.jpeg"
+                src="/images/founder-pic.jpeg"
                 alt="Kasun Perera - Founder"
                 className="w-28 h-28 rounded-full object-cover mx-auto mb-5"
                 style={{ border: '4px solid rgba(248,245,240,0.1)' }}
