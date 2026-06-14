@@ -275,7 +275,7 @@ export default function AboutPage() {
                 src="/images/founder-pic.jpeg"
                 alt="Kasun Perera - Founder"
                 className="w-52 h-52 rounded-full object-cover shadow-2xl"
-                style={{ border: '6px solid rgba(248,245,240,0.12)' }}
+                style={{ border: '6px solid rgba(248,245,240,0.12)', objectPosition: 'center 30%' }}
               />
             </div>
             <Eyebrow label="The Team" light className="justify-center" />
