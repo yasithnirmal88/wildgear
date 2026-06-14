@@ -84,7 +84,13 @@ export default function CatalogPage() {
   }, { scope: gridRef, dependencies: [activeCat, search, onlyAvail, loading] })
 
   const filtered = items.filter(g => {
-    const effectiveAvail = g.availability || 'available'
+    let effectiveAvail = g.availability || 'available'
+    if (g.variants && g.variants.length > 0) {
+      const hasStock = g.variants.some(v => (v.quantity || 0) > 0)
+      effectiveAvail = hasStock ? 'available' : 'unavailable'
+    } else if (g.quantity !== undefined) {
+      effectiveAvail = g.quantity > 0 ? 'available' : 'unavailable'
+    }
     
     const matchCat = activeCat === 'All' || g.category === activeCat
     const matchSearch = g.name.toLowerCase().includes(search.toLowerCase())
@@ -233,7 +239,13 @@ function CatalogCard({ item }: { item: CatalogItem }) {
     if (cardRef.current) cardRef.current.style.boxShadow = 'none'
   }
 
-  const currentAvail = item.availability || 'available';
+  let currentAvail = item.availability || 'available';
+  if (item.variants && item.variants.length > 0) {
+    const hasStock = item.variants.some(v => (v.quantity || 0) > 0)
+    currentAvail = hasStock ? 'available' : 'unavailable'
+  } else if (item.quantity !== undefined) {
+    currentAvail = item.quantity > 0 ? 'available' : 'unavailable'
+  }
 
   return (
     <div

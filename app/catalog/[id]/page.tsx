@@ -81,7 +81,15 @@ export default function ItemDetailPage({ params }: { params: { id: string } }) {
     )
   }
 
-  const currentAvail = item.availability || 'available'
+  let currentAvail = item.availability || 'available'
+  if (selectedVariant) {
+    currentAvail = (selectedVariant.quantity || 0) > 0 ? 'available' : 'unavailable'
+  } else if (item.variants && item.variants.length > 0) {
+    const hasStock = item.variants.some(v => (v.quantity || 0) > 0)
+    currentAvail = hasStock ? 'available' : 'unavailable'
+  } else if (item.quantity !== undefined) {
+    currentAvail = item.quantity > 0 ? 'available' : 'unavailable'
+  }
   const isAvailable = currentAvail !== 'unavailable'
   const priceDisplay = selectedVariant 
     ? `LKR ${selectedVariant.price.toLocaleString()}`
