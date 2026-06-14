@@ -287,6 +287,79 @@ function AdminPanelContent() {
   const [qtyModal, setQtyModal] = useState<any>(null);
   const [qtyDelta, setQtyDelta] = useState(0);
 
+  // Late return modal states
+  const [returnConfirmRental, setReturnConfirmRental] = useState<any>(null);
+  const [returnLateDays, setReturnLateDays] = useState<number>(0);
+  const [returnLateFee, setReturnLateFee] = useState<number>(0);
+  const [returnDateInput, setReturnDateInput] = useState<string>("");
+
+  // Helper calculations for Late Delays and Fees
+  const getDailyRate = (r: any) => {
+    if (!r || !r.items) return 0;
+    return r.items.reduce((s: number, x: any) => s + x.qty * x.pricePerDay, 0);
+  };
+
+  const getLateDays = (r: any) => {
+    if (!r) return 0;
+    if (r.status === 'returned') return r.late_days || r.lateDays || 0;
+    const todayStr = new Date().toISOString().split('T')[0];
+    if (r.returnDate && r.returnDate < todayStr) {
+      const due = new Date(r.returnDate);
+      const cur = new Date(todayStr);
+      const diffTime = cur.getTime() - due.getTime();
+      return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    }
+    return 0;
+  };
+
+  const getLateFee = (r: any) => {
+    if (!r) return 0;
+    if (r.status === 'returned') return r.late_fee || r.lateFee || 0;
+    return getLateDays(r) * getDailyRate(r);
+  };
+
+  const handleReturnDateChange = (newDateStr: string) => {
+    setReturnDateInput(newDateStr);
+    if (returnConfirmRental && newDateStr >= returnConfirmRental.returnDate) {
+      const due = new Date(returnConfirmRental.returnDate);
+      const cur = new Date(newDateStr);
+      const diffTime = cur.getTime() - due.getTime();
+      const calculatedDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+      setReturnLateDays(calculatedDays);
+      setReturnLateFee(calculatedDays * getDailyRate(returnConfirmRental));
+    } else {
+      setReturnLateDays(0);
+      setReturnLateFee(0);
+    }
+  };
+
+  const confirmReturn = async () => {
+    if (!returnConfirmRental) return;
+
+    try {
+      const { error } = await supabase.from('rental_records').update({
+        status: "returned",
+        late_days: returnLateDays,
+        late_fee: returnLateFee,
+      }).eq('id', returnConfirmRental.id);
+
+      if (error) throw error;
+
+      if (returnConfirmRental.items) {
+        for (const ri of returnConfirmRental.items) {
+          const invItem = items.find(i => i.id === ri.itemId);
+          if (invItem) {
+            await supabase.from('rental_items').update({ quantity: invItem.quantity + ri.qty }).eq('id', ri.itemId);
+          }
+        }
+      }
+      setReturnConfirmRental(null);
+    } catch (e: any) {
+      console.error(e);
+      alert("Error confirming return: " + e.message);
+    }
+  };
+
   // --- Auth & Data Sync ---
   useEffect(() => {
     // Check initial session
@@ -550,7 +623,7 @@ function AdminPanelContent() {
   const activeRentals = rentals.filter(r => r.status === "active").length;
   const today = new Date().toISOString().split('T')[0];
   const overdueCount = rentals.filter(r => r.status === "active" && r.returnDate < today).length;
-  const totalRevenue = rentals.reduce((s, r) => s + r.totalAmount, 0);
+  const totalRevenue = rentals.reduce((s, r) => s + r.totalAmount + (r.late_fee || r.lateFee || 0), 0);
   const lowStock = items.filter(i => i.quantity < 5).length;
   const sidebarW = 260;
 
@@ -797,6 +870,7 @@ function AdminPanelContent() {
                         <th style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.9, color: '#7a9288', background: '#faf8f4', padding: '12px 24px', textAlign: 'left', borderBottom: '1px solid #f2ede4' }}>Rent Date</th>
                         <th style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.9, color: '#7a9288', background: '#faf8f4', padding: '12px 24px', textAlign: 'left', borderBottom: '1px solid #f2ede4' }}>Due Date</th>
                         <th style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.9, color: '#7a9288', background: '#faf8f4', padding: '12px 24px', textAlign: 'center', borderBottom: '1px solid #f2ede4' }}>Days</th>
+                        <th style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.9, color: '#7a9288', background: '#faf8f4', padding: '12px 24px', textAlign: 'center', borderBottom: '1px solid #f2ede4' }}>Late Delays</th>
                         <th style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.9, color: '#7a9288', background: '#faf8f4', padding: '12px 24px', textAlign: 'right', borderBottom: '1px solid #f2ede4' }}>Total</th>
                         <th style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.9, color: '#7a9288', background: '#faf8f4', padding: '12px 24px', textAlign: 'center', borderBottom: '1px solid #f2ede4' }}>Status</th>
                         <th style={{ fontSize: 11, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 0.9, color: '#7a9288', background: '#faf8f4', padding: '12px 24px', textAlign: 'right', borderBottom: '1px solid #f2ede4' }}>Actions</th>
@@ -835,9 +909,32 @@ function AdminPanelContent() {
                           <td style={{ padding: '16px 24px', verticalAlign: 'middle', textAlign: 'center' }}>
                             <div style={{ fontSize: 15, fontWeight: 600, color: '#1a2420' }}>{r.days}</div>
                           </td>
+                          <td style={{ padding: '16px 24px', verticalAlign: 'middle', textAlign: 'center' }}>
+                            {(() => {
+                              const lDays = getLateDays(r);
+                              const lFee = getLateFee(r);
+                              if (lDays > 0) {
+                                return (
+                                  <div>
+                                    <span style={{ fontSize: 13, fontWeight: 700, color: '#dc2626' }}>
+                                      {lDays} {lDays === 1 ? 'day' : 'days'}
+                                    </span>
+                                    {lFee > 0 && (
+                                      <div style={{ fontSize: 11, color: '#7a9288', marginTop: 2 }}>
+                                        LKR {lFee.toLocaleString()}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              }
+                              return <span style={{ color: '#A8B5AB', fontSize: 14 }}>-</span>;
+                            })()}
+                          </td>
                           <td style={{ padding: '16px 24px', verticalAlign: 'middle', textAlign: 'right' }}>
                             <div style={{ fontSize: 11, color: '#7a9288', fontWeight: 600, marginBottom: 2 }}>LKR</div>
-                            <div style={{ fontSize: 16, fontWeight: 700, color: '#1a2420' }}>{r.totalAmount.toLocaleString()}</div>
+                            <div style={{ fontSize: 16, fontWeight: 700, color: '#1a2420' }}>
+                              {(r.totalAmount + (r.late_fee || r.lateFee || 0)).toLocaleString()}
+                            </div>
                           </td>
                           <td style={{ padding: '16px 24px', verticalAlign: 'middle', textAlign: 'center' }}>
                             {r.status === 'active' ? (
@@ -854,7 +951,17 @@ function AdminPanelContent() {
                             <div style={{ display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'flex-end' }}>
                               <button onClick={() => setViewRental(r)} style={{ padding: '8px 14px', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer', border: 'none', background: '#f2ede4', color: '#4a5e55', transition: 'opacity 0.15s' }} className="hover:opacity-80">Bill</button>
                               {r.status === 'active' && (
-                                <button onClick={() => markReturned(r.id)} style={{ padding: '8px 14px', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer', border: 'none', background: isLate ? '#dc2626' : '#255230', color: '#fff', transition: 'opacity 0.15s' }} className="hover:opacity-80">Return</button>
+                                <button onClick={() => {
+                                  const dailyRate = getDailyRate(r);
+                                  const calculatedLateDays = getLateDays(r);
+                                  const calculatedLateFee = calculatedLateDays * dailyRate;
+                                  const todayStr = new Date().toISOString().split('T')[0];
+                                  
+                                  setReturnConfirmRental(r);
+                                  setReturnDateInput(todayStr);
+                                  setReturnLateDays(calculatedLateDays);
+                                  setReturnLateFee(calculatedLateFee);
+                                }} style={{ padding: '8px 14px', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer', border: 'none', background: isLate ? '#dc2626' : '#255230', color: '#fff', transition: 'opacity 0.15s' }} className="hover:opacity-80">Return</button>
                               )}
                             </div>
                           </td>
@@ -1134,7 +1241,7 @@ function AdminPanelContent() {
                         <tr key={r.id} className="admin-table-row" style={{ borderBottom: "1px solid #F8F5F0" }}>
                           <td style={{ padding: 16, fontFamily: 'monospace', fontSize: 13, color: '#4b5563' }}>#{r.id.toString().slice(-8)}</td>
                           <td style={{ padding: 16, fontWeight: 700, fontSize: 14 }}>{r.customerName}</td>
-                          <td style={{ padding: 16, fontWeight: 800, fontSize: 14, color: '#217536' }}>LKR {r.totalAmount.toLocaleString()}</td>
+                          <td style={{ padding: 16, fontWeight: 800, fontSize: 14, color: '#217536' }}>LKR {(r.totalAmount + (r.late_fee || r.lateFee || 0)).toLocaleString()}</td>
                           <td style={{ padding: 16 }}><Badge label={r.status} color={r.status === "active" ? "#217536" : "#25D366"} /></td>
                         </tr>
                       ))}
@@ -1369,26 +1476,60 @@ function AdminPanelContent() {
                       <td style={{ padding: '12px 0', textAlign: 'right', fontWeight: 700 }}>LKR {(item.qty * item.pricePerDay * viewRental.days).toLocaleString()}</td>
                     </tr>
                   ))}
+                  {(() => {
+                    const lDays = getLateDays(viewRental);
+                    const lFee = getLateFee(viewRental);
+                    if (lDays > 0) {
+                      return (
+                        <tr style={{ borderBottom: '1px solid #F8F5F0' }}>
+                          <td style={{ padding: '12px 0', fontWeight: 600, color: '#dc2626' }}>Late Return Fee ({lDays} {lDays === 1 ? 'day' : 'days'} late)</td>
+                          <td style={{ padding: '12px 0', textAlign: 'center', color: '#dc2626' }}>-</td>
+                          <td style={{ padding: '12px 0', textAlign: 'right', color: '#dc2626' }}>LKR {getDailyRate(viewRental).toLocaleString()} / day</td>
+                          <td style={{ padding: '12px 0', textAlign: 'right', fontWeight: 700, color: '#dc2626' }}>LKR {lFee.toLocaleString()}</td>
+                        </tr>
+                      );
+                    }
+                    return null;
+                  })()}
                 </tbody>
               </table>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <div style={{ width: isMobile ? '100%' : '240px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F8F5F0' }}>
-                  <span style={{ fontSize: 13, color: '#6b7280' }}>Total Amount</span>
-                  <span style={{ fontWeight: 700 }}>LKR {viewRental.totalAmount.toLocaleString()}</span>
+            {(() => {
+              const baseTotal = viewRental.totalAmount;
+              const lDays = getLateDays(viewRental);
+              const lFee = getLateFee(viewRental);
+              const finalTotal = baseTotal + lFee;
+              const balanceDue = finalTotal - (viewRental.advancepaid || 0);
+              return (
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <div style={{ width: isMobile ? '100%' : '260px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F8F5F0' }}>
+                      <span style={{ fontSize: 13, color: '#6b7280' }}>Base Rental</span>
+                      <span style={{ fontWeight: 700 }}>LKR {baseTotal.toLocaleString()}</span>
+                    </div>
+                    {lDays > 0 && (
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F8F5F0', color: '#dc2626' }}>
+                        <span style={{ fontSize: 13 }}>Late Fee ({lDays} {lDays === 1 ? 'day' : 'days'})</span>
+                        <span style={{ fontWeight: 700 }}>LKR {lFee.toLocaleString()}</span>
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #F8F5F0' }}>
+                      <span style={{ fontSize: 13, color: '#6b7280' }}>Total Bill</span>
+                      <span style={{ fontWeight: 700 }}>LKR {finalTotal.toLocaleString()}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', color: '#059669' }}>
+                      <span style={{ fontSize: 13 }}>Advance Paid</span>
+                      <span style={{ fontWeight: 700 }}>- LKR {(viewRental.advancepaid || 0).toLocaleString()}</span>
+                    </div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderTop: '2px solid #217536', marginTop: 8 }}>
+                      <span style={{ fontWeight: 900, color: '#217536' }}>BALANCE DUE</span>
+                      <span style={{ fontWeight: 900, color: '#217536', fontSize: 18 }}>LKR {balanceDue.toLocaleString()}</span>
+                    </div>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', color: '#059669' }}>
-                  <span style={{ fontSize: 13 }}>Advance Paid</span>
-                  <span style={{ fontWeight: 700 }}>- LKR {(viewRental.advancepaid || 0).toLocaleString()}</span>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0', borderTop: '2px solid #217536', marginTop: 8 }}>
-                  <span style={{ fontWeight: 900, color: '#217536' }}>BALANCE DUE</span>
-                  <span style={{ fontWeight: 900, color: '#217536', fontSize: 18 }}>LKR {(viewRental.totalAmount - (viewRental.advancepaid || 0)).toLocaleString()}</span>
-                </div>
-              </div>
-            </div>
+              );
+            })()}
 
             <div style={{ marginTop: 60, textAlign: 'center', borderTop: '1px dashed #EDE8E0', paddingTop: 20 }}>
               <p style={{ fontSize: 11, color: '#84A98C', margin: 0 }}>Thank you for choosing Wild Trail Gear! Please handle equipment with care.</p>
@@ -1419,6 +1560,59 @@ function AdminPanelContent() {
               }
             }} variant="secondary" style={{ flex: 1 }}>Print Bill</Btn>
             <Btn onClick={() => setViewRental(null)} variant="ghost" style={{ flex: 1 }}>Close</Btn>
+          </div>
+        </Modal>
+      )}
+
+      {returnConfirmRental && (
+        <Modal title="Complete Rental Return" onClose={() => setReturnConfirmRental(null)} width={450}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ background: '#faf8f4', border: '1px solid #e6ddd0', padding: 16, borderRadius: 12 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#7a9288', textTransform: 'uppercase', letterSpacing: 0.5 }}>Customer</div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: '#1a2420', marginTop: 4 }}>{returnConfirmRental.customerName}</div>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginTop: 12 }}>
+                <div>
+                  <div style={{ fontSize: 11, color: '#7a9288', fontWeight: 600 }}>Rent Date</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: '#1a2420' }}>{returnConfirmRental.rentDate}</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, color: '#7a9288', fontWeight: 600 }}>Due Date</div>
+                  <div style={{ fontSize: 14, fontWeight: 600, color: '#1a2420' }}>{returnConfirmRental.returnDate}</div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: 12 }}>
+              <Input 
+                label="Actual Return Date" 
+                type="date" 
+                value={returnDateInput} 
+                onChange={(e: any) => handleReturnDateChange(e.target.value)} 
+              />
+              <Input 
+                label="Late Days" 
+                type="number" 
+                value={returnLateDays} 
+                onChange={(e: any) => {
+                  const val = Math.max(0, parseInt(e.target.value) || 0);
+                  setReturnLateDays(val);
+                  setReturnLateFee(val * getDailyRate(returnConfirmRental));
+                }} 
+              />
+            </div>
+
+            <Input 
+              label="Calculated Late Fee (LKR)" 
+              type="number" 
+              value={returnLateFee} 
+              onChange={(e: any) => setReturnLateFee(Math.max(0, parseInt(e.target.value) || 0))} 
+            />
+
+            <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
+              <Btn onClick={confirmReturn} variant="primary" style={{ flex: 1, height: 44, justifyContent: 'center' }}>Confirm Return</Btn>
+              <Btn onClick={() => setReturnConfirmRental(null)} variant="secondary" style={{ flex: 1, height: 44, justifyContent: 'center' }}>Cancel</Btn>
+            </div>
           </div>
         </Modal>
       )}
