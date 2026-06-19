@@ -66,7 +66,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex flex-col md:justify-end min-h-screen overflow-hidden px-6 md:px-[64px] pt-24 md:pt-0 pb-16 md:pb-[96px]"
+      className="relative flex flex-col justify-center md:justify-end min-h-screen overflow-hidden px-6 md:px-[64px] pt-24 md:pt-0 pb-16 md:pb-[96px]"
     >
       {/* Parallax background */}
       <div
