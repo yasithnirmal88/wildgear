@@ -138,7 +138,7 @@ export default function AboutPage() {
     <div className="bg-canvas min-h-screen pt-24">
 
       {/* Hero */}
-      <div ref={heroRef} className="bg-forest px-16 py-20 pb-24 relative overflow-hidden">
+      <div ref={heroRef} className="bg-forest px-6 md:px-16 py-16 md:py-20 pb-20 md:pb-24 relative overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image src="/images/hero-bg.jpeg" alt="" fill className="object-cover opacity-20" sizes="100vw" />
         </div>
@@ -160,7 +160,7 @@ export default function AboutPage() {
             <p className="hero-reveal text-[17px] leading-relaxed mb-10" style={{ color: 'rgba(248,245,240,0.72)' }}>
               Wild Trail Gear started with a simple frustration: great trails, but no easy way to access good gear. We built the rental shop we wished existed — local, honest, and run by people who actually use the gear.
             </p>
-            <div className="hero-reveal flex gap-10 pt-8 flex-wrap" style={{ borderTop: '1px solid rgba(248,245,240,0.12)' }}>
+            <div className="hero-reveal flex flex-wrap gap-6 md:gap-10 pt-8" style={{ borderTop: '1px solid rgba(248,245,240,0.12)' }}>
               {STATS.map((s, i) => (
                 <div key={s.label}>
                   <div
@@ -181,9 +181,9 @@ export default function AboutPage() {
       </div>
 
       {/* Values */}
-      <div ref={valuesRef} className="bg-lifted py-24 px-16">
+      <div ref={valuesRef} className="bg-lifted py-16 md:py-24 px-6 md:px-16">
         <div className="max-w-[1200px] mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12 md:mb-16">
             <Eyebrow label="What We Stand For" className="justify-center" />
             <h2
               className="font-black uppercase text-ink"
@@ -192,11 +192,11 @@ export default function AboutPage() {
               OUR <span className="font-light text-sage">Values</span>
             </h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {VALUES.map((v, i) => (
-              <div key={i} className="value-card bg-white rounded-card p-8" style={{ border: '1px solid #EDE8E0' }}>
-                <div className="bg-canvas rounded-2xl p-3 inline-block mb-5 text-forest">{v.icon}</div>
-                <div className="text-[17px] font-bold text-ink mb-2.5" style={{ letterSpacing: '-0.01em' }}>{v.title}</div>
+              <div key={i} className="value-card bg-white rounded-card p-5 md:p-8" style={{ border: '1px solid #EDE8E0' }}>
+                <div className="bg-canvas rounded-2xl p-3 inline-block mb-4 md:mb-5 text-forest">{v.icon}</div>
+                <div className="text-[16px] md:text-[17px] font-bold text-ink mb-2.5" style={{ letterSpacing: '-0.01em' }}>{v.title}</div>
                 <div className="text-sm text-slate leading-relaxed">{v.body}</div>
               </div>
             ))}
@@ -205,9 +205,9 @@ export default function AboutPage() {
       </div>
 
       {/* Story — horizontal reveal (image + text) */}
-      <div className="bg-canvas py-24 px-16">
+      <div className="bg-canvas py-16 md:py-24 px-6 md:px-16">
         <div className="max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
             {/* Image */}
             <div ref={storyLeftRef} className="relative">
               <div className="rounded-[40px] overflow-hidden relative" style={{ aspectRatio: '4/5' }}>
@@ -267,7 +267,7 @@ export default function AboutPage() {
       </div>
 
       {/* Team */}
-      <div className="bg-forest pt-16 pb-24 px-16">
+      <div className="bg-forest pt-16 pb-20 md:pb-24 px-6 md:px-16">
         <div className="max-w-[1200px] mx-auto">
           <div ref={teamRef} className="flex flex-col items-center text-center">
             <div className="relative mb-8">
@@ -292,8 +292,8 @@ export default function AboutPage() {
       </div>
 
       {/* Location */}
-      <div className="bg-canvas py-24 px-16">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+      <div className="bg-canvas py-16 md:py-24 px-6 md:px-16">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
           <div>
             <Eyebrow label="Find Us" />
             <h2
