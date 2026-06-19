@@ -31,7 +31,7 @@ export default function HomeCTA() {
   }, { scope: sectionRef })
 
   return (
-    <section ref={sectionRef} className="bg-forest py-24 px-16 relative overflow-hidden">
+    <section ref={sectionRef} className="bg-forest py-16 md:py-24 px-6 md:px-16 relative overflow-hidden">
       {/* Background image tint */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -46,11 +46,11 @@ export default function HomeCTA() {
         className="absolute inset-0 z-[1] bg-gradient-to-br from-forest/90 to-forest-dark/95"
       />
 
-      {/* Decorative */}
-      <div className="absolute z-[1] top-[10%] right-[5%] opacity-[0.07]">
+      {/* Decorative — hidden on mobile */}
+      <div className="absolute z-[1] top-[10%] right-[5%] opacity-[0.07] hidden md:block">
         <IconCompass size={280} color="#F8F5F0" />
       </div>
-      <div className="absolute z-[1] bottom-[5%] left-[3%] opacity-[0.05]">
+      <div className="absolute z-[1] bottom-[5%] left-[3%] opacity-[0.05] hidden md:block">
         <IconBoot size={200} color="#F8F5F0" />
       </div>
 
@@ -60,26 +60,26 @@ export default function HomeCTA() {
           <Eyebrow label="Your Next Adventure" light className="justify-center" />
         </div>
         <h2
-          className="cta-reveal font-black uppercase text-canvas text-[clamp(32px,4.5vw,60px)] tracking-[-0.03em] leading-none mb-6"
+          className="cta-reveal font-black uppercase text-canvas text-[clamp(28px,4.5vw,60px)] tracking-[-0.03em] leading-none mb-5 md:mb-6 mt-4 md:mt-0"
         >
           GEAR UP FOR YOUR<br />
           <span className="font-light text-sage-light">Next Adventure</span>
         </h2>
-        <p className="cta-reveal text-base leading-relaxed mb-10 text-canvas/65">
+        <p className="cta-reveal text-sm md:text-base leading-relaxed mb-8 md:mb-10 text-canvas/65">
           The trail is waiting. Message us on WhatsApp and we&rsquo;ll have your gear ready in no time.
         </p>
-        <div className="cta-reveal flex gap-4 justify-center flex-wrap">
+        <div className="cta-reveal flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center">
           <a
             href={waLink()}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 bg-whatsapp text-white rounded-btn px-8 py-3.5 text-[15px] font-semibold no-underline"
+            className="inline-flex items-center justify-center gap-2.5 bg-whatsapp text-white rounded-btn px-8 py-4 min-h-[48px] text-[15px] font-semibold no-underline"
           >
             <IconWA /> Chat on WhatsApp
           </a>
           <Link
             href="/catalog"
-            className="inline-flex items-center gap-2.5 text-canvas rounded-btn px-7 py-[13px] text-[15px] font-medium no-underline border-[1.5px] border-canvas/40 hover:border-canvas/80 transition-colors"
+            className="inline-flex items-center justify-center gap-2.5 text-canvas rounded-btn px-7 py-4 min-h-[48px] text-[15px] font-medium no-underline border-[1.5px] border-canvas/40 hover:border-canvas/80 transition-colors"
           >
             View Full Catalog
           </Link>

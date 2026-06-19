@@ -52,9 +52,9 @@ export default function Bundles() {
   }, { scope: sectionRef, dependencies: [bundles] })
 
   return (
-    <section ref={sectionRef} className="bg-canvas py-24 px-16">
+    <section ref={sectionRef} className="bg-canvas py-16 md:py-24 px-6 md:px-16">
       <div className="max-w-[1200px] mx-auto">
-        <div ref={headerRef} className="text-center mb-16">
+        <div ref={headerRef} className="text-center mb-10 md:mb-16">
           <Eyebrow label="Gear Bundles" className="justify-center" />
           <h2
             className="font-black uppercase text-ink text-[clamp(28px,3.5vw,48px)] tracking-[-0.03em]"
@@ -86,7 +86,7 @@ export default function Bundles() {
                 </div>
               )}
 
-              <div className="p-8 pb-8">
+              <div className="p-6 md:p-8">
                 <div className="flex justify-between items-start mb-3">
                   <div>
                     <div

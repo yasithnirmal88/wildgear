@@ -133,9 +133,9 @@ export default function Testimonials() {
   }
 
   return (
-    <section ref={sectionRef} className="bg-lifted py-24 px-16">
+    <section ref={sectionRef} className="bg-lifted py-16 md:py-24 px-6 md:px-16">
       <div className="max-w-[1200px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-20 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-20 items-start">
           {/* Left */}
           <div ref={leftRef}>
             <Eyebrow label="Reviews" />

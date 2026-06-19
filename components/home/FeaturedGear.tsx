@@ -90,13 +90,13 @@ export default function FeaturedGear() {
   const featured = items.length > 0 ? items : CATALOG.slice(0, 3)
 
   return (
-    <section ref={sectionRef} className="bg-lifted py-24 px-16">
+    <section ref={sectionRef} className="bg-lifted py-16 md:py-24 px-6 md:px-16">
       <div className="max-w-[1200px] mx-auto">
-        <div ref={headerRef} className="flex justify-between items-end mb-14">
+        <div ref={headerRef} className="flex flex-col md:flex-row justify-between md:items-end gap-4 md:gap-0 mb-10 md:mb-14">
           <div>
             <Eyebrow label="Featured Rentals" />
             <h2
-              className="font-black uppercase text-ink text-[clamp(28px,3.5vw,48px)] tracking-[-0.03em] leading-[1.05]"
+              className="font-black uppercase text-ink text-[clamp(26px,3.5vw,48px)] tracking-[-0.03em] leading-[1.05] mt-3 md:mt-0"
             >
               TRAIL{' '}
               <span className="font-light text-sage">ESSENTIALS</span>
