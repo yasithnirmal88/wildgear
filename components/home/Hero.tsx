@@ -66,7 +66,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex flex-col justify-end overflow-hidden min-h-screen px-[64px] pb-[96px]"
+      className="relative flex flex-col justify-end overflow-hidden min-h-screen px-6 md:px-[64px] pb-16 md:pb-[96px]"
     >
       {/* Parallax background */}
       <div
@@ -96,19 +96,19 @@ export default function Hero() {
       {/* Decorative compass */}
       <div
         ref={compassRef}
-        className="absolute z-[1] top-[12%] right-[8%] opacity-10 origin-center"
+        className="absolute z-[1] top-[12%] right-[8%] opacity-10 origin-center hidden md:block"
       >
         <IconCompass size={180} color="#F8F5F0" />
       </div>
 
       {/* Decorative boot */}
-      <div className="absolute z-[1] bottom-[28%] right-[14%] opacity-[0.08]">
+      <div className="absolute z-[1] bottom-[28%] right-[14%] opacity-[0.08] hidden md:block">
         <IconBoot size={120} color="#F8F5F0" />
       </div>
 
-      {/* Ghost watermark */}
+      {/* Ghost watermark — hidden on mobile to prevent overlap */}
       <div
-        className="absolute z-[1] pointer-events-none select-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[clamp(80px,14vw,220px)] font-extrabold text-[#F8F5F0]/[0.03] tracking-[-0.03em] uppercase whitespace-nowrap leading-none"
+        className="absolute z-[1] pointer-events-none select-none top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[clamp(80px,14vw,220px)] font-extrabold text-[#F8F5F0]/[0.03] tracking-[-0.03em] uppercase whitespace-nowrap leading-none hidden md:block"
       >
         WILD TRAIL
       </div>
@@ -119,29 +119,29 @@ export default function Hero() {
           <Eyebrow label="Panadura, Sri Lanka · Rent Quality Gear" light />
         </div>
 
-        <div className="hero-reveal mb-2">
+        <div className="hero-reveal mb-2 mt-4 md:mt-0">
           <span
-            className="block font-black uppercase text-canvas text-[clamp(52px,7vw,96px)] tracking-[-0.03em] leading-[0.93]"
+            className="block font-black uppercase text-canvas text-[clamp(36px,7vw,96px)] tracking-[-0.03em] leading-[0.93]"
           >
             WILD TRAIL
           </span>
           <span
-            className="block font-light uppercase text-sage-light text-[clamp(52px,7vw,96px)] tracking-[0.03em] leading-[0.93]"
+            className="block font-light uppercase text-sage-light text-[clamp(36px,7vw,96px)] tracking-[0.03em] leading-[0.93]"
           >
             GEAR
           </span>
         </div>
 
         <p
-          className="hero-reveal text-canvas/65 leading-relaxed text-[18px] font-normal mt-[28px] mb-[44px] max-w-[500px]"
+          className="hero-reveal text-canvas/65 leading-relaxed text-[16px] md:text-[18px] font-normal mt-5 md:mt-[28px] mb-6 md:mb-[44px] max-w-[500px]"
         >
           From hiking to camping, rent trusted equipment for every outdoor experience.
         </p>
 
-        <div className="hero-reveal flex gap-4 items-center flex-wrap">
+        <div className="hero-reveal flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
           <Link
             href="/catalog"
-            className="inline-flex items-center gap-2.5 bg-forest text-canvas rounded-btn px-8 py-3.5 text-[15px] font-semibold no-underline transition-opacity hover:opacity-85"
+            className="inline-flex items-center justify-center gap-2.5 bg-forest text-canvas rounded-btn px-8 py-4 min-h-[48px] text-[15px] font-semibold no-underline transition-opacity hover:opacity-85"
           >
             Browse Rental Gear <IconArrow />
           </Link>
@@ -149,7 +149,7 @@ export default function Hero() {
             href={waLink()}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2.5 text-canvas rounded-btn px-7 py-[13px] text-[15px] font-medium no-underline transition-colors border-[1.5px] border-canvas/40 hover:border-canvas/80"
+            className="inline-flex items-center justify-center gap-2.5 text-canvas rounded-btn px-7 py-4 min-h-[48px] text-[15px] font-medium no-underline transition-colors border-[1.5px] border-canvas/40 hover:border-canvas/80"
           >
             <IconWA size={16} /> WhatsApp Us
           </a>
@@ -157,17 +157,17 @@ export default function Hero() {
 
         {/* Stats */}
         <div
-          className="hero-reveal flex gap-12 mt-14 pt-8 flex-wrap border-t border-canvas/12"
+          className="hero-reveal flex gap-6 md:gap-12 mt-10 md:mt-14 pt-6 md:pt-8 flex-wrap border-t border-canvas/12"
         >
           {[['50+', 'Gear Items'], ['4.9★', 'Avg. Rating'], ['2-Day', 'Min. Rental']].map(([val, lbl]) => (
             <div key={lbl}>
               <div
-                className="font-black text-canvas text-[28px] tracking-[-0.03em] leading-none"
+                className="font-black text-canvas text-[22px] md:text-[28px] tracking-[-0.03em] leading-none"
               >
                 {val}
               </div>
               <div
-                className="font-semibold uppercase mt-1 text-[12px] text-canvas/45 tracking-[0.05em]"
+                className="font-semibold uppercase mt-1 text-[11px] md:text-[12px] text-canvas/45 tracking-[0.05em]"
               >
                 {lbl}
               </div>
