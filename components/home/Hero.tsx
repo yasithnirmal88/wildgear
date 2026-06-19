@@ -135,7 +135,7 @@ export default function Hero() {
         <p
           className="hero-reveal text-canvas/65 leading-relaxed text-[18px] font-normal mt-[28px] mb-[44px] max-w-[500px]"
         >
-          Your adventure starts here. Rent handpicked gear for Sri Lanka&rsquo;s trails — from the Knuckles Range to Horton Plains.
+          From hiking to camping, rent trusted equipment for every outdoor experience.
         </p>
 
         <div className="hero-reveal flex gap-4 items-center flex-wrap">
