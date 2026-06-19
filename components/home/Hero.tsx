@@ -78,7 +78,7 @@ export default function Hero() {
           alt="Wild Trail Gear mountain landscape with hikers"
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover" style={{ objectPosition: 'center 25%' }}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
           quality={100}
         />
