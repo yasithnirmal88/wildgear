@@ -66,12 +66,12 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex flex-col justify-end overflow-hidden min-h-screen px-6 md:px-[64px] pb-16 md:pb-[96px]"
+      className="relative flex flex-col justify-end min-h-screen px-6 md:px-[64px] pb-16 md:pb-[96px]"
     >
       {/* Parallax background */}
       <div
         ref={bgRef}
-        className="absolute inset-0 z-0 -top-[20%] -bottom-[20%]"
+        className="absolute inset-0 z-0 -top-[20%] -bottom-[20%] overflow-hidden"
       >
         <Image
           src="/images/upscaled%20home%20page%20image.jpg"
