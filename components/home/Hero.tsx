@@ -122,12 +122,12 @@ export default function Hero() {
 
         <div className="hero-reveal mb-2 mt-4 md:mt-0" style={{ textShadow: '0 2px 16px rgba(0,0,0,0.40)' }}>
           <span
-            className="block font-black uppercase text-canvas text-[clamp(36px,7vw,96px)] tracking-[-0.03em] leading-[0.93]"
+            className="block font-black uppercase text-canvas text-[clamp(36px,5vw,72px)] tracking-[-0.03em] leading-[0.93]"
           >
             WILD TRAIL
           </span>
           <span
-            className="block font-light uppercase text-sage-light text-[clamp(36px,7vw,96px)] tracking-[0.03em] leading-[0.93]"
+            className="block font-light uppercase text-sage-light text-[clamp(36px,5vw,72px)] tracking-[0.03em] leading-[0.93]"
           >
             GEAR
           </span>
