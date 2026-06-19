@@ -74,8 +74,8 @@ export default function Hero() {
         className="absolute inset-0 z-0 -top-[20%] -bottom-[20%] overflow-hidden"
       >
         <Image
-          src="/images/hero-bg-optimized.jpg"
-          alt="Wild Trail Gear mountain landscape"
+          src="/images/hero-bg.jpeg"
+          alt="Wild Trail Gear mountain landscape with hikers"
           fill
           priority
           className="object-cover object-center"
