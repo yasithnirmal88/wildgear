@@ -120,7 +120,7 @@ export default function Hero() {
           <Eyebrow label="Panadura, Sri Lanka · Rent Quality Gear" light />
         </div>
 
-        <div className="hero-reveal mb-2 mt-4 md:mt-0">
+        <div className="hero-reveal mb-2 mt-4 md:mt-0" style={{ textShadow: '0 2px 16px rgba(0,0,0,0.40)' }}>
           <span
             className="block font-black uppercase text-canvas text-[clamp(36px,7vw,96px)] tracking-[-0.03em] leading-[0.93]"
           >
@@ -134,9 +134,11 @@ export default function Hero() {
         </div>
 
         <p
-          className="hero-reveal text-canvas/65 leading-relaxed text-[16px] md:text-[18px] font-normal mt-5 md:mt-[28px] mb-6 md:mb-[44px] max-w-[500px]"
+          className="hero-reveal text-canvas leading-relaxed text-[16px] md:text-[20px] font-medium mt-5 md:mt-[28px] mb-6 md:mb-[44px] max-w-[560px]"
+          style={{ textShadow: '0 2px 12px rgba(0,0,0,0.35)' }}
         >
-          From hiking to camping, rent trusted equipment for every outdoor experience.
+          Your Adventure Starts Here<br />
+          <span className="font-light italic">Gear Up And Go</span>
         </p>
 
         <div className="hero-reveal flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
