@@ -132,7 +132,7 @@ export default function CatalogPage() {
 
       {/* Filters bar */}
       <div
-        className="bg-white px-16 py-5 sticky top-20 z-50"
+        className="bg-white px-16 py-5"
         style={{ borderBottom: '1px solid #EDE8E0' }}
       >
         <div className="max-w-[1200px] mx-auto flex items-center gap-6 flex-wrap">
