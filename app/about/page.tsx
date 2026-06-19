@@ -39,7 +39,7 @@ const VALUES = [
 ]
 
 const TEAM = [
-  { name: 'Kasun Perera', role: 'Founder & Trail Guide', initials: 'KP', gradient: 'linear-gradient(135deg, #1B4332, #52796F)' },
+  { name: 'Keshara Weliwaththa', role: 'Founder & Trail Guide', initials: 'KW', gradient: 'linear-gradient(135deg, #1B4332, #52796F)' },
   { name: 'Nimal Silva', role: 'Gear Curator', initials: 'NS', gradient: 'linear-gradient(135deg, #52796F, #84A98C)' },
   { name: 'Amali Wickrama', role: 'Customer Experience', initials: 'AW', gradient: 'linear-gradient(135deg, #84A98C, #2D4A35)' },
 ]
@@ -273,7 +273,7 @@ export default function AboutPage() {
             <div className="relative mb-8">
               <img
                 src="/images/founder-pic.jpeg"
-                alt="Kasun Perera - Founder"
+                alt="Keshara Weliwaththa - Founder"
                 className="w-52 h-52 rounded-full object-cover shadow-2xl"
                 style={{ border: '6px solid rgba(248,245,240,0.12)', objectPosition: 'center 15%' }}
               />
@@ -285,7 +285,7 @@ export default function AboutPage() {
             >
               MEET THE <span className="font-light text-sage-light">Founder</span>
             </h2>
-            <div className="text-xl font-bold text-canvas mt-6 mb-1.5">Kasun Perera</div>
+            <div className="text-xl font-bold text-canvas mt-6 mb-1.5">Keshara Weliwaththa</div>
             <div className="text-[13px] text-sage-light tracking-wide uppercase">Founder & Trail Guide</div>
           </div>
         </div>
