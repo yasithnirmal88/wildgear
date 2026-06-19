@@ -137,8 +137,7 @@ export default function Hero() {
           className="hero-reveal text-canvas leading-relaxed text-[16px] md:text-[20px] font-medium mt-5 md:mt-[28px] mb-6 md:mb-[44px] max-w-[560px]"
           style={{ textShadow: '0 2px 12px rgba(0,0,0,0.35)' }}
         >
-          Your Adventure Starts Here<br />
-          <span className="font-light italic">Gear Up And Go</span>
+          From hiking to camping, rent trusted equipment for every outdoor experience.
         </p>
 
         <div className="hero-reveal flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">
