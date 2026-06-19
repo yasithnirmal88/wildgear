@@ -66,7 +66,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative flex flex-col justify-end min-h-screen overflow-hidden px-6 md:px-[64px] pb-16 md:pb-[96px]"
+      className="relative flex flex-col md:justify-end min-h-screen overflow-hidden px-6 md:px-[64px] pt-24 md:pt-0 pb-16 md:pb-[96px]"
     >
       {/* Parallax background */}
       <div
@@ -78,7 +78,7 @@ export default function Hero() {
           alt="Wild Trail Gear mountain landscape with hikers"
           fill
           priority
-          className="object-cover" style={{ objectPosition: 'center 5%' }}
+          className="object-cover" style={{ objectPosition: 'center 10%' }}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw"
           quality={100}
         />
