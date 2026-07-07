@@ -6,16 +6,26 @@ import Footer from '@/components/Footer'
 import FloatingWA from '@/components/FloatingWA'
 
 export const metadata: Metadata = {
-  title: 'Wild Trail Gear — Rent Outdoor Gear in Sri Lanka',
-  description: 'Rent handpicked outdoor gear for Sri Lanka\'s trails. Based in Panadura. Tents, stoves, hammocks, and more — book via WhatsApp.',
-  keywords: 'outdoor gear rental, Sri Lanka, camping, hiking, Panadura, tent rental, backpack rental',
-  icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: 'any' }
-    ],
+  metadataBase: new URL("https://wildtrailgear.lk"),
+
+  title: "Wild Trail Gear | Camping & Hiking Gear Rental in Sri Lanka",
+
+  description:
+    "Rent camping tents, hiking backpacks, sleeping bags and outdoor equipment in Sri Lanka.",
+
+  keywords: [
+    "camping gear rental sri lanka",
+    "hiking gear rental",
+    "outdoor gear sri lanka",
+    "tent rental",
+    "wild trail gear"
+  ],
+
+  robots: {
+    index: true,
+    follow: true,
   },
-}
+};
 
 export default function RootLayout({
   children,
