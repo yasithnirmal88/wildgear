@@ -77,7 +77,7 @@ export default function Bundles() {
                 <div className="relative h-48">
                   <Image
                     src="/images/camping-eg.webp"
-                    alt="Weekend camping gear"
+                    alt="Camping gear bundle available for rent in Sri Lanka"
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, 50vw"

@@ -116,6 +116,8 @@ export default function Hero() {
 
       {/* Content */}
       <div ref={contentRef} className="relative z-[3] max-w-[760px]">
+        <h1 className="sr-only">Sri Lanka's Trusted Camping & Hiking Gear Rental Service</h1>
+
         <div className="hero-reveal">
           <Eyebrow label="Panadura, Sri Lanka · Rent Quality Gear" light />
         </div>
@@ -137,7 +139,7 @@ export default function Hero() {
           className="hero-reveal text-canvas leading-relaxed text-[16px] md:text-[20px] font-medium mt-5 md:mt-[28px] mb-6 md:mb-[44px] max-w-[560px]"
           style={{ textShadow: '0 2px 12px rgba(0,0,0,0.35)' }}
         >
-          From hiking to camping, rent trusted equipment for every outdoor experience.
+          From <Link href="/hiking-gear-rental-sri-lanka" className="underline decoration-sage-light/40 hover:decoration-sage-light transition-colors">hiking</Link> to <Link href="/camping-gear-rental-sri-lanka" className="underline decoration-sage-light/40 hover:decoration-sage-light transition-colors">camping</Link>, rent trusted equipment for every outdoor experience.
         </p>
 
         <div className="hero-reveal flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch sm:items-center">

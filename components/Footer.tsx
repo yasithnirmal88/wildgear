@@ -59,6 +59,8 @@ export default function Footer() {
             <div className="flex flex-col gap-3 text-sm font-medium">
               <Link href="/" className="hover:text-sage-light transition-colors">Home</Link>
               <Link href="/catalog" className="hover:text-sage-light transition-colors">Catalog</Link>
+              <Link href="/camping-gear-rental-sri-lanka" className="hover:text-sage-light transition-colors">Camping Gear</Link>
+              <Link href="/hiking-gear-rental-sri-lanka" className="hover:text-sage-light transition-colors">Hiking Gear</Link>
               <Link href="/about" className="hover:text-sage-light transition-colors">Our Story</Link>
               <Link href="/contact" className="hover:text-sage-light transition-colors">Contact</Link>
             </div>
