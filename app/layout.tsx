@@ -4,6 +4,7 @@ import './fonts.css'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import FloatingWA from '@/components/FloatingWA'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://wildtrailgear.lk"),
@@ -39,6 +40,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <FloatingWA />
+        <SpeedInsights />
       </body>
     </html>
   )
