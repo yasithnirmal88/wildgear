@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
 
   title: {
-    default: 'Camping & Hiking Gear Rental Sri Lanka | Wild Trail Gear',
+    default: 'Camping & Hiking Gear Rental in Panadura Sri Lanka | Wild Trail Gear',
     template: '%s | Wild Trail Gear',
   },
 

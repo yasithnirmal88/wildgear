@@ -8,7 +8,7 @@ import Testimonials from '@/components/home/Testimonials'
 import HomeCTA from '@/components/home/HomeCTA'
 
 export const metadata: Metadata = {
-  title: 'Wild Trail Gear: Camping & Hiking Gear Rental Sri Lanka',
+  title: 'Wild Trail Gear: Camping & Hiking Gear Rental in Panadura Sri Lanka',
   description:
     'Wild Trail Gear: Rent quality camping and hiking gear in Sri Lanka. Tents, cooking equipment, trekking accessories and outdoor essentials for your next adventure. Based in Panadura.',
 }

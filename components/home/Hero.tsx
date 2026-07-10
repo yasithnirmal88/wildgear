@@ -116,7 +116,7 @@ export default function Hero() {
 
       {/* Content */}
       <div ref={contentRef} className="relative z-[3] max-w-[760px]">
-        <h1 className="sr-only">Wild Trail Gear: Sri Lanka's Trusted Camping & Hiking Gear Rental Service</h1>
+        <h1 className="text-canvas font-bold text-sm md:text-base tracking-wider uppercase mb-4 hero-reveal">Wild Trail Gear – Camping Gear Rental in Sri Lanka</h1>
 
         <div className="hero-reveal">
           <Eyebrow label="Panadura, Sri Lanka · Rent Quality Gear" light />
