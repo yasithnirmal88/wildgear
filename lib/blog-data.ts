@@ -34,9 +34,9 @@ export const BLOG_POSTS: BlogPost[] = [
     category: 'Camping Guides',
     tags: ['camping', 'sri lanka', 'travel tips'],
     image: {
-      url: '/images/hero-bg.jpeg',
-      alt: 'Camping tent setup in Sri Lanka mountain location',
-      source: 'Wild Trail Gear Uplink',
+      url: '/images/hulangala.jpg',
+      alt: 'Hulangala Peak camping and hiking destination in Sri Lanka',
+      source: 'Wild Trail Gear',
     },
     references: [
       { title: 'Sri Lankan Camping Destination Guides', url: 'https://dayouting.lk/visit/Camping-Places' },
