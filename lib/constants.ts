@@ -7,6 +7,8 @@ export function waLink(msg = "Hi! I'd like to rent some gear from Wild Trail Gea
 export const NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'Catalog', href: '/catalog' },
+  { label: 'Blog', href: '/blog' },
   { label: 'About Us', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ]
+

@@ -19,6 +19,9 @@ export default function JsonLd() {
     image: 'https://www.wildtrailgear.lk/images/brand-poster.jpeg',
     priceRange: 'LKR 200 – LKR 900/day',
     openingHours: 'Mo-Su 00:00-24:00',
+    sameAs: [
+      'https://web.facebook.com/people/Wild-Trail-Gear/61574325466909/',
+    ],
   }
 
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />

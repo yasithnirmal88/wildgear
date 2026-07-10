@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { IconPin, IconWA, IconMail, IconCompass } from './Icons'
+import { IconPin, IconWA, IconMail, IconFacebook, IconCompass } from './Icons'
 import { waLink } from '@/lib/constants'
 
 export default function Footer() {
@@ -73,6 +73,10 @@ export default function Footer() {
                 <IconWA size={16} className="text-sage group-hover:text-sage-light" />
                 <span>+94 77 686 4908</span>
               </a>
+              <a href="https://web.facebook.com/people/Wild-Trail-Gear/61574325466909/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 group no-underline text-canvas">
+                <IconFacebook size={16} className="text-sage group-hover:text-sage-light" />
+                <span>Wild Trail Gear on Facebook</span>
+              </a>
               <a href="mailto:Wild.trail.gears@gmail.com" className="flex items-center gap-3 group no-underline text-canvas">
                 <IconMail size={16} className="text-sage group-hover:text-sage-light" />
                 <span>Wild.trail.gears@gmail.com</span>
@@ -105,19 +109,22 @@ export default function Footer() {
           className="flex justify-between items-center flex-wrap gap-3 pt-6"
           style={{ borderTop: '1px solid rgba(248,245,240,0.08)' }}
         >
-          <div className="flex items-center gap-2">
-            <span className="text-[11px]" style={{ color: 'rgba(248,245,240,0.3)' }}>
-              © 2026 Wild Trail Gear. All rights reserved.
-            </span>
-            <Link href="/admin?key=trail2026" className="opacity-0 hover:opacity-50 transition-opacity cursor-default">
-              <IconCompass size={12} color="rgba(248,245,240,0.5)" />
-            </Link>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-[11px] flex items-center gap-1.5" style={{ color: 'rgba(248,245,240,0.3)' }}>
-              <IconPin size={10} color="rgba(248,245,240,0.3)" /> Sri Lanka · LKR
-            </span>
-          </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px]" style={{ color: 'rgba(248,245,240,0.3)' }}>
+                © 2026 Wild Trail Gear. All rights reserved.
+              </span>
+              <Link href="/admin?key=trail2026" className="opacity-0 hover:opacity-50 transition-opacity cursor-default">
+                <IconCompass size={12} color="rgba(248,245,240,0.5)" />
+              </Link>
+            </div>
+            <div className="flex items-center gap-4">
+              <a href="https://web.facebook.com/people/Wild-Trail-Gear/61574325466909/" target="_blank" rel="noopener noreferrer" className="hover:opacity-70 transition-opacity">
+                <IconFacebook size={14} color="rgba(248,245,240,0.3)" />
+              </a>
+              <span className="text-[11px] flex items-center gap-1.5" style={{ color: 'rgba(248,245,240,0.3)' }}>
+                <IconPin size={10} color="rgba(248,245,240,0.3)" /> Sri Lanka · LKR
+              </span>
+            </div>
         </div>
       </div>
     </footer>

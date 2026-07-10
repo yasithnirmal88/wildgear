@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import './fonts.css'
 import Nav from '@/components/Nav'
@@ -8,6 +8,12 @@ import JsonLd from '@/components/JsonLd'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const siteUrl = 'https://www.wildtrailgear.lk'
+
+export const viewport: Viewport = {
+  themeColor: '#1B4332',
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -54,6 +60,8 @@ export const metadata: Metadata = {
     ],
   },
 
+
+
   twitter: {
     card: 'summary_large_image',
     title: 'Camping & Hiking Gear Rental Sri Lanka | Wild Trail Gear',
@@ -65,6 +73,7 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
 }
+
 
 export default function RootLayout({
   children,

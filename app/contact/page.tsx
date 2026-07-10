@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { IconCompass, IconBoot, IconWA, IconPhone, IconMail, IconPin, IconArrow } from '@/components/Icons'
+import { IconCompass, IconBoot, IconWA, IconPhone, IconMail, IconFacebook, IconPin, IconArrow } from '@/components/Icons'
 import Eyebrow from '@/components/Eyebrow'
 import { waLink } from '@/lib/constants'
 
@@ -200,6 +200,7 @@ export default function ContactPage() {
                 { icon: <IconWA size={20} color="#fff" />, bg: '#25D366', label: 'WhatsApp', val: '+94 77 686 4908', sub: 'Usually replies within the hour', href: waLink() },
                 { icon: <IconPhone size={20} color="#1B4332" />, bg: '#EDE8E0', label: 'Phone', val: '+94 77 686 4908', sub: 'Call us anytime', href: 'tel:+94776864908' },
                 { icon: <IconMail size={20} color="#1B4332" />, bg: '#EDE8E0', label: 'Email', val: 'Wild.trail.gears@gmail.com', sub: 'We reply within 24 hours', href: 'mailto:Wild.trail.gears@gmail.com' },
+                { icon: <IconFacebook size={20} color="#1877F2" />, bg: '#EDE8E0', label: 'Facebook', val: 'Wild Trail Gear', sub: 'Follow us for trail updates', href: 'https://web.facebook.com/people/Wild-Trail-Gear/61574325466909/' },
                 { icon: <IconPin size={20} color="#1B4332" />, bg: '#EDE8E0', label: 'Visit Us', val: 'No 27/A, Bodhirukkarama Road, Nalluruwa, Panadura', sub: 'Come pick up your gear', href: null },
               ].map((item, i) => (
                 <div
