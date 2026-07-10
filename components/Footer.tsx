@@ -45,8 +45,8 @@ export default function Footer() {
                 <IconPin size={22} color="#F8F5F0" />
               </div>
               <div>
-                <div className="font-black text-[15px] uppercase tracking-tighter leading-none">Wild Trail</div>
-                <div className="text-[10px] font-bold uppercase tracking-widest text-sage-light">Panadura</div>
+                <div className="font-black text-[15px] uppercase tracking-tighter leading-none">Wild Trail Gear</div>
+                <div className="text-[10px] font-bold uppercase tracking-widest text-sage-light">Panadura, Sri Lanka</div>
               </div>
             </div>
             <p className="text-sm leading-relaxed" style={{ color: 'rgba(248,245,240,0.5)' }}>

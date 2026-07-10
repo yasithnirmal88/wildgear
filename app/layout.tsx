@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    'Rent quality camping and hiking gear in Sri Lanka. Tents, cooking equipment, trekking accessories and outdoor essentials for your next adventure. Based in Panadura.',
+    'Wild Trail Gear: Rent quality camping and hiking gear in Sri Lanka. Tents, cooking equipment, trekking accessories and outdoor essentials for your next adventure. Based in Panadura.',
 
   keywords: [
     'camping gear rental sri lanka',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: 'Camping & Hiking Gear Rental Sri Lanka | Wild Trail Gear',
-    description: 'Rent tents, camping equipment and hiking essentials in Sri Lanka.',
+    description: 'Wild Trail Gear: Rent tents, camping equipment and hiking essentials in Sri Lanka.',
     url: siteUrl,
     siteName: 'Wild Trail Gear',
     type: 'website',
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Camping & Hiking Gear Rental Sri Lanka | Wild Trail Gear',
-    description: 'Rent tents, camping equipment and hiking essentials in Sri Lanka.',
+    description: 'Wild Trail Gear: Rent tents, camping equipment and hiking essentials in Sri Lanka.',
     images: ['/images/brand-poster.jpeg'],
   },
 
